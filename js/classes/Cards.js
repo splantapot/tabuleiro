@@ -1,3 +1,5 @@
+let cards = [];
+
 class Cards {
     constructor(id, deck, name,power, life) {
         this.id = id;
@@ -26,6 +28,9 @@ class Cards {
         newPlace.appendChild(imagemCarta);
         cardBox.appendChild(newPlace);
         
+
+        this.div = newPlace;
+        this.img = imagemCarta;
     }
 }
 
@@ -62,9 +67,9 @@ function viewCard(elmnt = document.getElementById('elmnt')) {
             h: Math.round(elmnt.getBoundingClientRect().height)
         };
 
-        cardView.style.display = 'block';
+        cardView.style.display = selected.id==null? 'block' : 'none';
         cardView.style.left = `${finalPos.x - cardView.clientWidth-10}px`;
-        cardView.style.top = `${finalPos.y-10}px`;
+        cardView.style.top = `${finalPos.y/4}px`;
 
         const imgView = cardView.children[0];
         if (imgView.classList.contains('imgCartaView')) {
@@ -73,6 +78,7 @@ function viewCard(elmnt = document.getElementById('elmnt')) {
         imgView.src = elmnt.src;
 
         elmnt.onmouseleave = onMouseLeave;
+        elmnt.onmousedown = onMouseLeave;
     }
 
     function onMouseLeave(e) {
@@ -92,15 +98,19 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
     function onMouseDown(e) {
         e == e || window.event;
         e.preventDefault();
-
-
-        console.log(parseInt(e.target.id.split('_')[0]));
         
-        if (!selected.id) {
+        if (selected.id == null) {
             selected.id = parseInt(e.target.id.split('_')[0]);
             selected.time = new Date().getTime();
-            const cardSelected = document.getElementById(`${selected.id}_carta`);
-            cardSelected.classList.add('select');
+            const cardSelected = cards[selected.id];
+            cardSelected.div.classList.add('select');
+        }
+
+        if (selected.id != null && selected.id == parseInt(elmnt    .id.split('_')[0]) && (new Date().getTime()-selected.time)>180) {
+            const cardSelected = cards[selected.id];
+            cardSelected.div.classList.remove('select');
+            selected.id = null;
+            selected.time = 0;
         }
 
         elmnt.onmouseup = onMouseUp;
