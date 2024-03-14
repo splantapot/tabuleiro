@@ -13,6 +13,15 @@ class Place {
         newPlace.style.width = newPlace.style.height = `${size}px`;
 
         board.appendChild(newPlace);
+
+
+
         return newPlace;
     }
+}
+
+function placeSelectable(elmnt = document.getElementById('elmnt')) {
+    elmnt = document.getElementById('elmnt');
+
+    
 }

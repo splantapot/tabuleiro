@@ -2,7 +2,7 @@ const back = document.getElementById('back');
 const board = document.getElementById('board');
 const cardBox = document.getElementById("cardBox");
 
-const placeNumbers = 25;
+const placeNumbers = 15;
 const placeSize = back.clientHeight<back.clientWidth? 
     back.clientHeight-(back.clientHeight%placeNumbers): 
     back.clientHeight-(back.clientWidth%placeNumbers)
@@ -29,4 +29,4 @@ makeCards(`
     Tarsila do Amaral/80/130;
     Getúlio Vargas/80/100;
     Carmem Miranda/80/160  
-`, 'Brasil')
+`, 'Brasil');

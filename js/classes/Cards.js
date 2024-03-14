@@ -20,6 +20,9 @@ class Cards {
         viewCard(imagemCarta);
         viewCard(newPlace);
 
+        cardSelectable(imagemCarta);
+        cardSelectable(newPlace);
+
         newPlace.appendChild(imagemCarta);
         cardBox.appendChild(newPlace);
         
@@ -48,18 +51,62 @@ function viewCard(elmnt = document.getElementById('elmnt')) {
         e == e || window.event;
         e.preventDefault();
         
-        //console.log(e.srcElement.id.trim().split('_')[0]);
-        console.log(e.srcElement)
-        cardView.style.display = 'block'
-        
+        if(elmnt.localName == 'div') {
+            elmnt = (elmnt.children[0]);
+        }
+
+        const finalPos = {
+            x: Math.round(elmnt.getBoundingClientRect().x),
+            y: Math.round(elmnt.getBoundingClientRect().y),
+            w: Math.round(elmnt.getBoundingClientRect().width),
+            h: Math.round(elmnt.getBoundingClientRect().height)
+        };
+
+        cardView.style.display = 'block';
+        cardView.style.left = `${finalPos.x - cardView.clientWidth-10}px`;
+        cardView.style.top = `${finalPos.y-10}px`;
+
+        const imgView = cardView.children[0];
+        if (imgView.classList.contains('imgCartaView')) {
+            imgView.classList.add('imgCartaView');
+        }
+        imgView.src = elmnt.src;
+
         elmnt.onmouseleave = onMouseLeave;
     }
 
     function onMouseLeave(e) {
-        
-        console.log(e.srcElement.id.trim().split('_')[0]);
         cardView.style.display = 'none';
-
         elmnt.onmousemove = null; 
+    }
+}
+
+const selected = {
+    id: null,
+    time: 0
+}
+
+function cardSelectable(elmnt = document.getElementById('elmnt')) {
+    elmnt.onmousedown = onMouseDown;
+
+    function onMouseDown(e) {
+        e == e || window.event;
+        e.preventDefault();
+
+
+        console.log(parseInt(e.target.id.split('_')[0]));
+        
+        if (!selected.id) {
+            selected.id = parseInt(e.target.id.split('_')[0]);
+            selected.time = new Date().getTime();
+            const cardSelected = document.getElementById(`${selected.id}_carta`);
+            cardSelected.classList.add('select');
+        }
+
+        elmnt.onmouseup = onMouseUp;
+    };
+
+    function onMouseUp(e) {
+        elmnt.onmouseup = null;
     }
 }

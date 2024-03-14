@@ -7,6 +7,8 @@
     
     width: 54px;
     height: 83px;
+
+    margin: 3px;
 }
 
 .imgCarta {
@@ -26,7 +28,17 @@ div[id="cardView"] {
     width: 270px;
     height: 412px;
 
-    border: 2px solid white;
+    border-radius: 10px;
     
     display: none;
+}
+
+.imgCartaView {
+    width: 270px;
+    height: 412px;
+    border-radius: 10px;
+}
+
+.select {
+    border: 2px solid red;
 }
