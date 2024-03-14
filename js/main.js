@@ -1,6 +1,5 @@
 const back = document.getElementById('back');
 const board = document.getElementById('board');
-const cardViewer = document.getElementById("cardViewer");
 const cardBox = document.getElementById("cardBox");
 
 const placeNumbers = 25;
@@ -9,7 +8,6 @@ const placeSize = back.clientHeight<back.clientWidth?
     back.clientHeight-(back.clientWidth%placeNumbers)
 ;
 board.style.width = board.style.height = `${placeSize}px`;
-cardViewer.style.margin = `${(back.clientHeight%placeNumbers)/2}px` 
 
 let places = [];
 
@@ -30,5 +28,5 @@ makeCards(`
     Machado de Assis/70/100;
     Tarsila do Amaral/80/130;
     Getúlio Vargas/80/100;
-    Carmem Miranda/80/160;  
+    Carmem Miranda/80/160  
 `, 'Brasil')

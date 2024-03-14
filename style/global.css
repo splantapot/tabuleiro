@@ -26,18 +26,6 @@ div[id="board"] {
     float: left;
 }
 
-div[id="cardViewer"] {
-    position: absolute;
-    border: 2px solid gray;
-    background-color: lightcoral;
-    width: 200px;
-    height: 308px;
-
-    top: 0%;
-    left: 50%;
-    transform: translate(-50%,-0%);
-}
-
 div[id="cardBox"] {
     position: relative;
     border: 2px solid gray;

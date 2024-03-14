@@ -2,4 +2,31 @@
     position: relative;
     display: inline-block;
     background-color: burlywood;
+    margin: 2px;
+    padding: 0px;
+    
+    width: 54px;
+    height: 83px;
+}
+
+.imgCarta {
+    width: 54px;
+    height: 83px;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+div[id="cardView"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 270px;
+    height: 412px;
+
+    border: 2px solid white;
+    
+    display: none;
 }

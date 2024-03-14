@@ -11,15 +11,18 @@ class Cards {
         let newPlace = document.createElement('div');
         newPlace.id = id;
         newPlace.classList.add('card');
-        newPlace.style.width = `${60}px`
-        newPlace.style.height = `${60/this.cardScale}px`;
 
-        /*let imagemCarta = document.createElement('img');
-        imagemCarta.src = `./cartas/${id}.jpg`
-        newPlace.appendChild(imagemCarta);*/
+        let imagemCarta = document.createElement('img');
+        imagemCarta.id = `${id}Img`;
+        imagemCarta.classList.add('imgCarta');
+        imagemCarta.src = `../cartas/${id}.jpg`
+        
+        viewCard(imagemCarta);
+        viewCard(newPlace);
 
-
+        newPlace.appendChild(imagemCarta);
         cardBox.appendChild(newPlace);
+        
     }
 }
 
@@ -27,7 +30,7 @@ function makeCards(str = '', deck = '') {
     let cartText = str.trim().split(';');
     cartText.forEach((cardText) => {
         cards.push(new Cards(
-            `${cards.length}_card`, //id
+            `${cards.length}_carta`, //id
             deck, //Deck
             cardText.trim().split('/')[0], //Name
             parseInt((cardText.trim().split('/')[1])), //Power
@@ -35,4 +38,28 @@ function makeCards(str = '', deck = '') {
         ))
     });
     console.log(cards);
+}
+
+function viewCard(elmnt = document.getElementById('elmnt')) {
+    const cardView = document.getElementById('cardView');
+    elmnt.onmouseenter = onMouseMove
+    
+    function onMouseMove(e) {
+        e == e || window.event;
+        e.preventDefault();
+        
+        //console.log(e.srcElement.id.trim().split('_')[0]);
+        console.log(e.srcElement)
+        cardView.style.display = 'block'
+        
+        elmnt.onmouseleave = onMouseLeave;
+    }
+
+    function onMouseLeave(e) {
+        
+        console.log(e.srcElement.id.trim().split('_')[0]);
+        cardView.style.display = 'none';
+
+        elmnt.onmousemove = null; 
+    }
 }
