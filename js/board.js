@@ -16,7 +16,7 @@ document.getElementById('boardImg').style.width = board.style.width;
 document.getElementById('boardImg').style.height = board.style.height;
 
 const stylesSheets = document.styleSheets[1];
-const classMini = stylesSheets.cssRules[4];
+const classMini = stylesSheets.cssRules[6];
 
 classMini.style.setProperty('height', `${placePixel*0.8}px`);
 classMini.style.setProperty('width', `${placePixel*0.8*0.65}px`);

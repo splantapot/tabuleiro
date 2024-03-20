@@ -1,13 +1,10 @@
-/*  Movement types:
+/*Movement types:
 
 x - Bispo
 + - Torre
-o - Area
 * - Rainha
 
-Alcance: 1 a 5;
-
-*/
+Alcance: 1 a 5;*/
 
 class Cards {
     constructor(id, deck, name, power, life, moveType, moveRng) {
@@ -63,16 +60,20 @@ function makeCards(str = '', deck = '') {
 
 function viewCard(elmnt = document.getElementById('elmnt')) {
     const cardView = document.getElementById('cardView');
+    const cardLabels = document.getElementById('cardLabels');
+
     elmnt.onmouseenter = onMouseMove
     
     function onMouseMove(e) {
         e == e || window.event;
         e.preventDefault();
-        
+
         if(elmnt.localName == 'div') {
             elmnt = (elmnt.children[0]);
         }
 
+        const cardId = parseInt(elmnt.id.trim().split('_')[0]);
+        
         const finalPos = {
             x: Math.round(elmnt.getBoundingClientRect().x),
             y: Math.round(elmnt.getBoundingClientRect().y),
@@ -84,12 +85,19 @@ function viewCard(elmnt = document.getElementById('elmnt')) {
         cardView.style.left = `${finalPos.x - cardView.clientWidth-10}px`;
         cardView.style.top = `${finalPos.y/4}px`;
 
-        const imgView = cardView.children[0];
-        if (imgView.classList.contains('imgCartaView')) {
-            imgView.classList.add('imgCartaView');
-        }
+        const imgView = document.getElementById('cardViewImg');
+        imgView.classList.add('imgCardView');
         imgView.src = elmnt.src;
 
+        cardLabels.style.width = '95%'
+        cardLabels.style.position = 'absolute';
+        cardLabels.style.left = '50%';
+        cardLabels.style.transform = 'translate(-50%,0%)';
+
+        cardLabels.children[0].innerHTML = `Poder: ${cards[cardId].power}`
+        cardLabels.children[1].innerHTML = `Vida: ${cards[cardId].life}`
+        cardLabels.children[2].innerHTML = `Mover: ${cards[cardId].moveRng}`
+        
         elmnt.onmouseleave = onMouseLeave;
         elmnt.onmousedown = onMouseLeave;
     }
@@ -114,7 +122,7 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
         e == e || window.event;
         e.preventDefault();
 
-        if (selected.id == null) {
+        if (selected.id == null && game.phase == 0) {
             selected.id = parseInt(e.target.id.split('_')[0]);
             selected.time = new Date().getTime();
             selected.origin = document.getElementById(selected.id+'_carta').offsetParent.id;
@@ -166,19 +174,6 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
                                 if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length)) {
                                     selected.editPlaces.push((add.x*m)+(add.y*m*placeNumbers)+org)
                                 }
-                            }
-                        }
-                    break;
-
-                    case 'o':
-                        for (let m = 1; m<=cardSelected.moveRng; m++) {
-                            for (let dir = 0; dir<m*8;dir++) {
-                                add.x = Math.round(Math.cos(dir*Math.PI/m/4));
-                                add.y = Math.round(Math.sin(dir*Math.PI/m/4));
-                                add.x *= m;
-                                add.y *= m;
-                                console.log('x:'+add.x+" | y:"+add.y)
-                                
                             }
                         }
                     break;

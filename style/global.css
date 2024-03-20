@@ -1,6 +1,7 @@
 * {
     padding: 0;
     margin: 0;
+    font-family: monospace;
 }
 
 div[id="back"] {
@@ -68,4 +69,14 @@ img[id="boardImg"] {
     bottom: 15%;
     height: 40px;
     width: 80px;
+}
+
+.phaseL {
+    position: absolute;
+    margin: 10px;
+    font-size: 20px;
+    bottom: 25%;
+    height: 40px;
+    width: 80px;
+    color: white;
 }

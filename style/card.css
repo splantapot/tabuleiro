@@ -27,17 +27,33 @@ div[id="cardView"] {
     left: 0;
 
     width: 270px;
-    height: 412px;
+    min-height: 412px;
 
     border-radius: 10px;
     
     display: none;
 }
 
-.imgCartaView {
+.imgCardView {
+    position: relative;
     width: 270px;
     height: 412px;
     border-radius: 10px;
+}
+
+div[id="cardLabels"] {
+    position: relative;
+    width: 270px;
+    min-height: 60px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, rgba(255,100,100,0.6),rgba(100,255,100,0.6), rgba(100,100,255,0.6));
+}
+
+.cardViewLbl {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 5px;
 }
 
 .mini {

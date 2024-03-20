@@ -12,8 +12,8 @@ makeCards(`
     Dom Pedro II/50/130/x/4;
     Machado de Assis/70/100/*/2;
     Tarsila do Amaral/80/130/*/4;
-    Getúlio Vargas/80/100/o/2;
-    Carmem Miranda/80/160/o/4 
+    Getúlio Vargas/80/100/+/2;
+    Carmem Miranda/80/160/*/4 
 `, 'Brasil');
 
 requestAnimationFrame(fps);
@@ -30,5 +30,8 @@ function fps() {
 
     document.getElementById('id_view').innerHTML = `S.id: ${selected.id}`;
     document.getElementById('org_view').innerHTML = `S.og: ${selected.origin}`
-    document.getElementById('range_view').innerHTML = `S.rng: ${selected.editPlaces}`
+    const len = selected.editPlaces == null? 0 : selected.editPlaces.length
+    document.getElementById('range_view').innerHTML = `S.rng: ${selected.editPlaces} (${len})`
+    document.getElementById('turn_view').innerHTML = `T.sts: ${game.phase}`
+    document.getElementById('act_view').innerHTML = `T.acs: ${game.turnActs}`
 }

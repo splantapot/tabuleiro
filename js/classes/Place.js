@@ -27,11 +27,14 @@ function placeSelectable(elmnt = document.getElementById('elmnt')) {
         
         if (e.target.nodeName.toLowerCase() == 'div') {
             const cardSelected = cards[selected.id];
-
             const placeId = e.target.id.split('_')[0];
             
-            if (selected.id != null && (new Date().getTime()-selected.time)>180) {
-                if (document.getElementById(placeId+'_place').childElementCount == 0) {
+            if (selected.id != null && ((new Date().getTime()-selected.time)>180)) {
+                if ((!(selected.origin == 'cardBox')) && !(selected.editPlaces != null && selected.editPlaces.includes(parseInt(placeId)))) {
+                    console.log('fora da area');
+                    selected.id = null;
+                }
+                if (document.getElementById(placeId+'_place').childElementCount == 0 && selected.id != null) {
                     cardSelected.div.classList.add('mini');
                     cardSelected.img.classList.add('mini');
 
