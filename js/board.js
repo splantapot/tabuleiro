@@ -20,3 +20,6 @@ const classMini = stylesSheets.cssRules[4];
 
 classMini.style.setProperty('height', `${placePixel*0.8}px`);
 classMini.style.setProperty('width', `${placePixel*0.8*0.65}px`);
+
+let places = [];
+let cards = [];

@@ -51,10 +51,6 @@ div[id="cardView"] {
     border: solid rgb(0, 100, 255);
 }
 
-.atk {
-    border: solid rgb(255, 10, 40)
-}
-
-.peace {
-    border: solid rgb(0, 255, 100);
+.moverange {
+    background: linear-gradient(45deg, rgba(0, 119, 255, 0.185),rgba(0, 238, 255, 0.288))
 }

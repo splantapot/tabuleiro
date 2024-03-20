@@ -61,3 +61,11 @@ img[id="boardImg"] {
     top: 0;
     left: 0;
 }
+
+.phase {
+    position: absolute;
+    margin-left: 10px;
+    bottom: 15%;
+    height: 40px;
+    width: 80px;
+}

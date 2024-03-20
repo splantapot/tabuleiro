@@ -1,5 +1,3 @@
-let places = [];
-
 class Place {
     constructor(id = '', size = 10, color = '', x, y) {
         this.id = id;
@@ -28,14 +26,17 @@ function placeSelectable(elmnt = document.getElementById('elmnt')) {
         
         
         if (e.target.nodeName.toLowerCase() == 'div') {
-            const placeId = e.target.id.split('_')[0];
             const cardSelected = cards[selected.id];
+
+            const placeId = e.target.id.split('_')[0];
+
+            console.log(placeId)
             
             if (selected.id != null && (new Date().getTime()-selected.time)>180) {
                 if (document.getElementById(placeId+'_place').childElementCount == 0) {
                     cardSelected.div.classList.add('mini');
                     cardSelected.img.classList.add('mini');
-                    
+
                     if (selected.origin != 'cardBox') {
                         const lastPlaceId = selected.origin.split('_')[0];
                         places[parseInt(lastPlaceId)].div.removeChild(cardSelected.div);
@@ -48,7 +49,15 @@ function placeSelectable(elmnt = document.getElementById('elmnt')) {
                 selected.id = null;
                 selected.time = new Date().getTime();
                 selected.origin = null;
-                selected.type = 0;
+
+                if (selected.editPlaces != null) {
+                    for(let edit of selected.editPlaces) {
+                        if (places[edit] != undefined) {
+                            places[edit].div.classList.remove('moverange');
+                        }
+                    }
+                    selected.editPlaces = null;
+                }
             }
         }
     }

@@ -6,28 +6,29 @@ for (let y = 0; y < placeNumbers; y++) {
 }
 
 makeCards(`
-    Zumbí dos Palmares/80/150;
-    Esperança Garcia/60/200;
-    Edson Arantes (Pelé)/90/150;
-    Dom Pedro II/50/130;
-    Machado de Assis/70/100;
-    Tarsila do Amaral/80/130;
-    Getúlio Vargas/80/100;
-    Carmem Miranda/80/160  
+    Zumbí dos Palmares/80/150/+/2;
+    Esperança Garcia/60/200/+/4;
+    Edson Arantes (Pelé)/90/150/x/2;
+    Dom Pedro II/50/130/x/4;
+    Machado de Assis/70/100/*/2;
+    Tarsila do Amaral/80/130/*/4;
+    Getúlio Vargas/80/100/o/2;
+    Carmem Miranda/80/160/o/4 
 `, 'Brasil');
 
 requestAnimationFrame(fps);
 function fps() {
     requestAnimationFrame(fps);
 
-    for (let plc of places) {
-        if (plc.cardIn == null) {
-            plc.div.style.backgroundColor = plc.color;
-        } else {
-            plc.div.style.backgroundColor = 'rgb(255,0,0)';
+    if (selected.editPlaces != null) {
+        for(let edit of selected.editPlaces) {
+            if (places[edit] != undefined) {
+                places[edit].div.classList.add('moverange');
+            }
         }
     }
 
     document.getElementById('id_view').innerHTML = `S.id: ${selected.id}`;
-    document.getElementById('org_view').innerHTML = `S.og: ${selected.origin}`  
+    document.getElementById('org_view').innerHTML = `S.og: ${selected.origin}`
+    document.getElementById('range_view').innerHTML = `S.rng: ${selected.editPlaces}`
 }
