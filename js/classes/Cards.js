@@ -122,6 +122,7 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
         e == e || window.event;
         e.preventDefault();
 
+        //Movement
         if (selected.id == null && game.phase == 0) {
             selected.id = parseInt(e.target.id.split('_')[0]);
             selected.time = new Date().getTime();
@@ -181,12 +182,21 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
             }
         }
 
+        //Attack
+        if (selected.id == null && game.phase == 1) {
+            selected.id = parseInt(e.target.id.split('_')[0]);
+            selected.time = new Date().getTime();
+            const cardSelected = cards[selected.id];
+            cardSelected.div.classList.add('atk');
+        }
+
         if (new Date().getTime()-selected.time>180 && selected.id != null && (
             (selected.id == parseInt(elmnt.id.split('_')[0])) ||
             (selected.id != elmnt.id && elmnt.classList.contains('card'))
             )){
             const cardSelected = cards[selected.id];
             cardSelected.div.classList.remove('select');
+            cardSelected.div.classList.remove('atk')
             selected.id = null;
             selected.time = new Date().getTime();
             selected.origin = null;

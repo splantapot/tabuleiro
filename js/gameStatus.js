@@ -10,23 +10,25 @@ const game = {
 }
 
 function proxFase() {
-    game.phase++;
-    if (game.phase >= 2) {
-        resetTurno();
+    if (selected.id == null) {
+        game.phase++;
+        if (game.phase >= 2) {
+            resetTurno();
+        }
+    
+        switch (game.phase) {
+            case 0:
+                game.phaseTitle = 'Fase de Movimento'
+            break;
+            case 1:
+                game.phaseTitle = 'Fase de Ataque'
+            break;
+            case 2:
+                game.phaseTitle = 'Fase de Acordos'
+            break;
+        }
+        document.getElementById('boardPhase').innerHTML = game.phaseTitle;
     }
-
-    switch (game.phase) {
-        case 0:
-            game.phaseTitle = 'Fase de Movimento'
-        break;
-        case 1:
-            game.phaseTitle = 'Fase de Ataque'
-        break;
-        case 2:
-            game.phaseTitle = 'Fase de Acordos'
-        break;
-    }
-    document.getElementById('boardPhase').innerHTML = game.phaseTitle;
 }
 
 function resetTurno() {

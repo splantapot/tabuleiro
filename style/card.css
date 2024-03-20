@@ -63,10 +63,14 @@ div[id="cardLabels"] {
     z-index: 10;
 }
 
+.moverange {
+    background: linear-gradient(45deg, rgba(0, 119, 255, 0.185),rgba(0, 238, 255, 0.288))
+}
+
 .select {
     border: solid rgb(0, 100, 255);
 }
 
-.moverange {
-    background: linear-gradient(45deg, rgba(0, 119, 255, 0.185),rgba(0, 238, 255, 0.288))
+.atk {
+    border: solid rgb(255, 50, 50);
 }

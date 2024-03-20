@@ -25,7 +25,7 @@ function placeSelectable(elmnt = document.getElementById('elmnt')) {
         e.preventDefault();
         
         
-        if (e.target.nodeName.toLowerCase() == 'div') {
+        if (e.target.nodeName.toLowerCase() == 'div' && game.phase == 0) {
             const cardSelected = cards[selected.id];
             const placeId = e.target.id.split('_')[0];
             
