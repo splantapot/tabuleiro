@@ -29,8 +29,6 @@ function placeSelectable(elmnt = document.getElementById('elmnt')) {
             const cardSelected = cards[selected.id];
 
             const placeId = e.target.id.split('_')[0];
-
-            console.log(placeId)
             
             if (selected.id != null && (new Date().getTime()-selected.time)>180) {
                 if (document.getElementById(placeId+'_place').childElementCount == 0) {

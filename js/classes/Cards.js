@@ -122,15 +122,63 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
             cardSelected.div.classList.add('select');
 
             if (document.getElementById(selected.origin).classList.contains('place')) {
+                const org = parseInt(selected.origin.split('_')[0]);
+                const maxX = org-(org%placeNumbers)+placeNumbers-1;
+                const minX = org-(org%placeNumbers);
+                selected.editPlaces = [];
+                const add = {
+                    x:0,
+                    y:0
+                }
                 switch (cardSelected.moveType) {
                     case '+':
-                        selected.editPlaces = [];
                         for(let dir = 0; dir < 4; dir++) {
-                            const x = [-1, 0, 1, 0];
-                            const y = [0, 1, 0, -1];
-                            for (let m = cardSelected.moveRng; m > 0; m--) {
-                                const org = parseInt(selected.origin.split('_')[0]);
-                                selected.editPlaces.push((x[dir]*m)+((y[dir]*m)*placeNumbers)+org)
+                            add.x = Math.round(Math.cos(dir*Math.PI/2));
+                            add.y = Math.round(Math.sin(dir*Math.PI/2));
+                            for (let m = 1; m<=cardSelected.moveRng; m++) {
+                                const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
+                                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length)) {
+                                    selected.editPlaces.push((add.x*m)+(add.y*m*placeNumbers)+org)
+                                }
+                            }
+                        }
+                    break;
+
+                    case 'x':
+                        for(let dir = 0; dir < 4; dir++) {
+                            add.x = Math.round(Math.cos((dir*Math.PI/2)+(Math.PI/4)));
+                            add.y = Math.round(Math.sin((dir*Math.PI/2)+(Math.PI/4)));
+                            for (let m = 1; m<=cardSelected.moveRng; m++) {
+                                const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
+                                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length)) {
+                                    selected.editPlaces.push((add.x*m)+(add.y*m*placeNumbers)+org)
+                                }
+                            }
+                        }
+                    break;
+
+                    case '*':
+                        for(let dir = 0; dir < 8; dir++) {
+                            add.x = Math.round(Math.cos(dir*Math.PI/4));
+                            add.y = Math.round(Math.sin(dir*Math.PI/4));
+                            for (let m = 1; m<=cardSelected.moveRng; m++) {
+                                const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
+                                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length)) {
+                                    selected.editPlaces.push((add.x*m)+(add.y*m*placeNumbers)+org)
+                                }
+                            }
+                        }
+                    break;
+
+                    case 'o':
+                        for (let m = 1; m<=cardSelected.moveRng; m++) {
+                            for (let dir = 0; dir<m*8;dir++) {
+                                add.x = Math.round(Math.cos(dir*Math.PI/m/4));
+                                add.y = Math.round(Math.sin(dir*Math.PI/m/4));
+                                add.x *= m;
+                                add.y *= m;
+                                console.log('x:'+add.x+" | y:"+add.y)
+                                
                             }
                         }
                     break;
