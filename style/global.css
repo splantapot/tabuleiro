@@ -24,6 +24,7 @@ div[id="board"] {
     padding: 0;
     border: transparent;
     float: left;
+    z-index: 3;
 }
 
 div[id="cardBox"] {
@@ -40,8 +41,23 @@ div[id="cardBox"] {
 
 div[id="playerMenu"] {
     position: relative;
+    top: 0;
     left: 66%;
     border: 1px dashed cyan;
     width: 300px;
     min-height: 600px;
-} 
+}
+
+.lblT {
+    position: relative;
+    background-color: aquamarine;
+    z-index: 10;
+    width: 120px;
+}
+
+img[id="boardImg"] {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+}

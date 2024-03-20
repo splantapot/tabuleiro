@@ -6,8 +6,6 @@ class Place {
         this.size = size;
         this.color = color;
 
-        this.cardIn = null;
-
         let newPlace = document.createElement('div');
         newPlace.id=id;
         newPlace.classList.add('place');
@@ -23,33 +21,35 @@ class Place {
 
 function placeSelectable(elmnt = document.getElementById('elmnt')) {
     elmnt.onmousedown = onMouseDown;
-
+    
     function onMouseDown(e) {
         e == e || window.event;
         e.preventDefault();
-        const placeId = e.target.id.split('_')[0];
-
         
-        if (selected.id != null && places[parseInt(placeId)].cardIn == null) {
-            places[parseInt(placeId)].cardIn = selected.id;
-
+        
+        if (e.target.nodeName.toLowerCase() == 'div') {
+            const placeId = e.target.id.split('_')[0];
             const cardSelected = cards[selected.id];
-            cardSelected.div.classList.add('mini');
-            cardSelected.img.classList.add('mini');
-
-            const finalPos = {
-                x: Math.round(elmnt.getBoundingClientRect().x),
-                y: Math.round(elmnt.getBoundingClientRect().y),
-                w: Math.round(elmnt.getBoundingClientRect().width),
-                h: Math.round(elmnt.getBoundingClientRect().height)
-            };
-
-            console.log(finalPos);
-            places[parseInt(placeId)].div.appendChild(cardSelected.div);
-            cardSelected.div.classList.remove('select');
             
-            selected.id = null;
-            selected.time = new Date().getTime();
+            if (selected.id != null && (new Date().getTime()-selected.time)>180) {
+                if (document.getElementById(placeId+'_place').childElementCount == 0) {
+                    cardSelected.div.classList.add('mini');
+                    cardSelected.img.classList.add('mini');
+                    
+                    if (selected.origin != 'cardBox') {
+                        const lastPlaceId = selected.origin.split('_')[0];
+                        places[parseInt(lastPlaceId)].div.removeChild(cardSelected.div);
+                    }
+                    
+                    places[parseInt(placeId)].div.appendChild(cardSelected.div);
+                }
+                
+                cardSelected.div.classList.remove('select');
+                selected.id = null;
+                selected.time = new Date().getTime();
+                selected.origin = null;
+                selected.type = 0;
+            }
         }
     }
 }

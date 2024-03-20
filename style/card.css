@@ -48,5 +48,13 @@ div[id="cardView"] {
 }
 
 .select {
-    border: solid red;
+    border: solid rgb(0, 100, 255);
+}
+
+.atk {
+    border: solid rgb(255, 10, 40)
+}
+
+.peace {
+    border: solid rgb(0, 255, 100);
 }

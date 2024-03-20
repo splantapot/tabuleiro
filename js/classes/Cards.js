@@ -1,7 +1,7 @@
 let cards = [];
 
 class Cards {
-    constructor(id, deck, name,power, life) {
+    constructor(id, deck, name, power, life) {
         this.id = id;
         this.deck = deck;
         this.name = name;
@@ -89,7 +89,8 @@ function viewCard(elmnt = document.getElementById('elmnt')) {
 
 const selected = {
     id: null,
-    time: 0
+    time: 0,
+    origin: null
 }
 
 function cardSelectable(elmnt = document.getElementById('elmnt')) {
@@ -98,22 +99,27 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
     function onMouseDown(e) {
         e == e || window.event;
         e.preventDefault();
-        
+
         if (selected.id == null) {
             selected.id = parseInt(e.target.id.split('_')[0]);
             selected.time = new Date().getTime();
+            selected.origin = document.getElementById(selected.id+'_carta').offsetParent.id;
             const cardSelected = cards[selected.id];
             cardSelected.div.classList.add('select');
         }
 
-        if (selected.id != null && selected.id == parseInt(elmnt    .id.split('_')[0]) && (new Date().getTime()-selected.time)>180) {
+        if (new Date().getTime()-selected.time>180 && selected.id != null && (
+            (selected.id == parseInt(elmnt.id.split('_')[0])) ||
+            (selected.id != elmnt.id && elmnt.classList.contains('card'))
+            )){
             const cardSelected = cards[selected.id];
             cardSelected.div.classList.remove('select');
             selected.id = null;
-            selected.time = 0;
+            selected.time = new Date().getTime();
+            selected.origin = null;
         }
 
-        elmnt.onmouseup = onMouseUp;
+        elmnt. onmouseup = onMouseUp;
     };
 
     function onMouseUp(e) {

@@ -12,6 +12,9 @@ const placeSize = back.clientHeight<back.clientWidth?
 board.style.width = board.style.height = `${placeSize}px`;
 const placePixel = placeSize/placeNumbers;
 
+document.getElementById('boardImg').style.width = board.style.width;
+document.getElementById('boardImg').style.height = board.style.height;
+
 const stylesSheets = document.styleSheets[1];
 const classMini = stylesSheets.cssRules[4];
 
