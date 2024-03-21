@@ -63,6 +63,31 @@ img[id="boardImg"] {
     left: 0;
 }
 
+label[id="boardDmg"] {
+    position: absolute;
+    z-index: 12;
+    font-size: 20px;
+    color: rgb(255, 10, 0);
+    display: none;
+}
+
+
+.dmgUp {
+    animation-name: dmgUpAnim;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+}
+
+@keyframes dmgUpAnim {
+    0% {transform: translate(-0%, -25%); color: rgba(255, 10, 0, 1); display: block;}
+    15% {transform: translate(-15%, -35%); color: rgba(255, 10, 0, 0.8);}
+    30% {transform: translate(-30%, -45%); color: rgba(255, 10, 0, 0.6);}
+    45% {transform: translate(-15%, -55%); color: rgba(255, 10, 0, 0.5);}
+    60% {transform: translate(15%, -65%); color: rgba(255, 10, 0, 0.4);}
+    75% {transform: translate(30%, -75%); color: rgba(255, 10, 0, 0.3);}
+    100% {transform: translate(16%, -85%); color: rgba(255, 10, 0, 0.1);}
+}
+
 .phase {
     position: absolute;
     margin-left: 10px;
