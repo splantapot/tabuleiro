@@ -8,6 +8,7 @@ div[id="back"] {
     width: 100vw;
     height: 100vh;
     background-color: black;
+    z-index: 0;
 }
 
 div[id="board"] {
@@ -17,15 +18,6 @@ div[id="board"] {
     left: 50%;
     transform: translate(-75%,-50%);
     float: left;
-}
-
-.place {
-    position: relative;
-    margin: 0;
-    padding: 0;
-    border: transparent;
-    float: left;
-    z-index: 3;
 }
 
 div[id="cardBox"] {
@@ -39,6 +31,7 @@ div[id="cardBox"] {
     left: 50%;
     transform: translate(-50%,10%);
 }
+
 
 div[id="playerMenu"] {
     position: relative;
@@ -56,18 +49,35 @@ div[id="playerMenu"] {
     width: 120px;
 }
 
+.place {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    border: transparent;
+    float: left;
+    z-index: 3;
+}
+
 img[id="boardImg"] {
     position: absolute;
 
     top: 0;
     left: 0;
+    z-index: 1;
 }
 
-label[id="boardDmg"] {
+div[id="boardDmg"] {
     position: absolute;
-    z-index: 12;
-    font-size: 20px;
+    top: 0%;
+    left: 0%;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    font-weight: 700;
     color: rgb(255, 10, 0);
+    text-align: center;
+    vertical-align: middle;
+    z-index: 12;
     display: none;
 }
 

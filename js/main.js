@@ -6,7 +6,7 @@ for (let y = 0; y < placeNumbers; y++) {
 }
 
 makeCards(`
-    Zumbí dos Palmares/80/150/+/2;
+    Zumbí dos Palmares/80/25/+/2;
     Esperança Garcia/60/200/+/4;
     Edson Arantes (Pelé)/90/150/x/2;
     Dom Pedro II/50/130/x/4;

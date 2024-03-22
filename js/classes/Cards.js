@@ -15,17 +15,23 @@ class Cards {
         this.power = power;
         this.moveType = moveType;
         this.moveRng = moveRng;
-
-        //Kill
         this.isLive = true;
-        this.kill = () => {
-            let diedFace = document.createElement('div');
-            diedFace.id = this.id+'KO';
-            diedFace.classList.add('deadCard');
-            this.div.appendChild(diedFace);
-        }
 
-        this.cardScale = (1080/1650); // =~ 0.6545, Const de proporção da carta
+        // =~ 0.6545, Const de proporção da carta
+        this.cardScale = (1080/1650); 
+
+        //Damage
+        this.damage = (dam) => {
+            this.life -= dam
+            this.div.classList.add('dmgTake');
+            setTimeout(() => {
+                if (this.life <= 0) {
+                    this.life = 0;
+                    this.isLive = false;
+                    this.img.style.filter = 'grayscale(100%)';
+                }
+            }, 400);
+        }
 
         //  Creating card div
         let newPlace = document.createElement('div');
@@ -79,15 +85,9 @@ function viewCard(elmnt = document.getElementById('elmnt')) {
         e.preventDefault();
 
         if(elmnt.localName == 'div') {
-            if (elmnt.classList.contains('card')) {
-                elmnt = (elmnt.children[0]);
-            } else if (elmnt.classList.contains('deadCard')) {
-                console.log(elmnt.parentElement);
-            }
+            elmnt = (elmnt.children[0]);
         }
-
         const cardId = parseInt(elmnt.id.trim().split('_')[0]);
-        
         const finalPos = {
             x: Math.round(elmnt.getBoundingClientRect().x),
             y: Math.round(elmnt.getBoundingClientRect().y),
@@ -95,6 +95,7 @@ function viewCard(elmnt = document.getElementById('elmnt')) {
             h: Math.round(elmnt.getBoundingClientRect().height)
         };
 
+        cardView.style.filter = cards[cardId].isLive? 'none' : 'grayscale(100%)';
         cardView.style.display = selected.id==null? 'block' : 'none';
         cardView.style.left = `${finalPos.x - cardView.clientWidth-10}px`;
         cardView.style.top = `${finalPos.y/4}px`;
@@ -158,55 +159,52 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
             genMap(cardSelected);
         }
         if (selected.id != null && game.phase == 1 && selected.id != targetId && cards[targetId].isLive && document.getElementById(targetId + '_carta').offsetParent.classList.contains('atkrange')) {
-            const targetCard = cards[targetId];
-            const atackerCard = cards[selected.id]
-            const dmgType = Math.sign(atackerCard.power-targetCard.power);
+            const dmgType = Math.sign(cards[selected.id].power-cards[targetId].power);
             const dmgLabel = document.getElementById('boardDmg');
-            let finalPos;
-            
-            switch (dmgType) {
-                case 1:
-                    finalPos = {
-                        x: Math.round(targetCard.div.getBoundingClientRect().x),
-                        y: Math.round(targetCard.div.getBoundingClientRect().y),
-                        w: Math.round(targetCard.div.getBoundingClientRect().width),
-                        h: Math.round(targetCard.div.getBoundingClientRect().height)
-                    };
-                    dmgLabel.style.left = `${finalPos.x-finalPos.w}px`;
-                    dmgLabel.style.top = `${finalPos.y}px`;
-                    dmgLabel.style.display = 'block';
-                    dmgLabel.classList.add('dmgUp');
-                    let dmgTaked = targetCard.life-(atackerCard.power-targetCard.power)>0? (atackerCard.power-targetCard.power) : targetCard.life;
-                    targetCard.life -= dmgTaked;
-                    dmgLabel.innerHTML = `-${dmgTaked}`;
-                    targetCard.div.classList.add('dmgTake');
-
-                    if (targetCard.life == 0) {
-                        targetCard.isLive = false;
-                        targetCard.kill();
-                    }
-
-                break;
-                case -1:
-                    finalPos = {
-                        x: Math.round(atackerCard.div.getBoundingClientRect().x),
-                        y: Math.round(atackerCard.div.getBoundingClientRect().y),
-                        w: Math.round(atackerCard.div.getBoundingClientRect().width),
-                        h: Math.round(atackerCard.div.getBoundingClientRect().height)
-                    };
-                    dmgLabel.innerHTML = `-${targetCard.power-atackerCard.power}`;
-                    dmgLabel.style.left = `${finalPos.x-finalPos.w}px`;
-                    dmgLabel.style.top = `${finalPos.y}px`;
-                    dmgLabel.style.display = 'block';
-                    dmgLabel.classList.add('dmgUp');
-                    atackerCard.life -= (targetCard.power-atackerCard.power);
-                    atackerCard.div.classList.add('dmgTake');
-                break;
+            const dmgCard = {
+                c1: 0,
+                c2: 0,
+                dmg: 0,
+                ix1:0,
+                ix2:0
             }
 
+            switch (dmgType) {
+                case -1:
+                    dmgCard.c1 = cards[targetId];
+                    dmgCard.c2 = cards[selected.id];
+                    dmgCard.ix1 = targetId;
+                    dmgCard.ix2 = selected.id;
+                break;
+                default: //selecionado > alvo
+                    dmgCard.c1 = cards[selected.id];
+                    dmgCard.c2 = cards[targetId];
+                    dmgCard.ix2 = targetId;
+                    dmgCard.ix1 = selected.id;
+                break;
+
+            }
+
+            const finalPos = {
+                x: Math.round(dmgCard.c2.div.offsetParent.getBoundingClientRect().left),
+                y: Math.round(dmgCard.c2.div.offsetParent.getBoundingClientRect().top),
+                w: Math.floor(dmgCard.c2.div.offsetParent.getBoundingClientRect().width),
+                h: Math.floor(dmgCard.c2.div.offsetParent.getBoundingClientRect().height),
+            }
+            dmgCard.dmg = dmgCard.c2.life-(dmgCard.c1.power-dmgCard.c2.power)>0?(dmgCard.c1.power-dmgCard.c2.power):dmgCard.c2.life;
+            dmgLabel.style.display = 'block';
+            dmgLabel.style.left = `${finalPos.x}px`;
+            dmgLabel.style.top = `${finalPos.y}px`;
+            dmgLabel.innerHTML = `-${dmgCard.dmg}`;
+            dmgLabel.classList.add('dmgUp');
+
+            dmgCard.c2.damage(dmgCard.dmg);
+            cards[dmgCard.ix1] = dmgCard.c1;
+            cards[dmgCard.ix2] = dmgCard.c2;
+
             setTimeout(() => {
-                atackerCard.div.classList.remove('dmgTake');
-                targetCard.div.classList.remove('dmgTake');
+                dmgCard.c1.div.classList.remove('dmgTake');
+                dmgCard.c2.div.classList.remove('dmgTake');
                 dmgLabel.classList.remove('dmgUp');
                 dmgLabel.style.display = 'none'
             }, 999);
