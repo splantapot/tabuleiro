@@ -7,11 +7,6 @@ for (let y = 0; y < placeNumbers; y++) {
 
 players.push(new Player('Brasil'));
 players.push(new Player('EstadosUnidos'));
-game.turnPlayerMax = players.length-1;
-
-for (let i = 0; i < 15; i++) {
-    document.getElementById(`${i+15}_place`).classList.add(`m${paises[i]}`)
-}
 
 makeCards(`
     Zumbí dos Palmares/80/25/+/2;
@@ -47,10 +42,10 @@ function fps() {
         }
     });
 
-    document.getElementById('id_view').innerHTML = `S.id: ${selected.id}`;
-    document.getElementById('org_view').innerHTML = `S.og: ${selected.origin}`
-    const len = selected.editPlaces == null? 0 : selected.editPlaces.length
-    document.getElementById('range_view').innerHTML = `S.rng: ${selected.editPlaces} (${len})`
-    document.getElementById('turn_view').innerHTML = `T.sts: ${game.phase}`
-    document.getElementById('act_view').innerHTML = `T.plr: ${players[game.turnPlayer].deck}`
+    // document.getElementById('id_view').innerHTML = `S.id: ${selected.id}`;
+    // document.getElementById('org_view').innerHTML = `S.og: ${selected.origin}`
+    // const len = selected.editPlaces == null? 0 : selected.editPlaces.length
+    // document.getElementById('range_view').innerHTML = `S.rng: ${selected.editPlaces} (${len})`
+    // document.getElementById('turn_view').innerHTML = `T.sts: ${game.phase}`
+    // document.getElementById('act_view').innerHTML = `T.plr: ${players[game.turnPlayer].deck}`
 }

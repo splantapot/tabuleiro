@@ -2,7 +2,7 @@ const back = document.getElementById('back');
 const board = document.getElementById('board');
 const cardBox = document.getElementById("cardBox");
 
-const placeNumbers = 15;
+const placeNumbers = 20;
 
 const placeSize = back.clientHeight<back.clientWidth? 
     back.clientHeight-(back.clientHeight%placeNumbers): 

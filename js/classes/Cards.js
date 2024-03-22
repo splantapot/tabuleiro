@@ -167,7 +167,7 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
         const targetId = parseInt(e.target.id.split('_')[0]);
         
         //Movement
-        if (selected.id == null && game.phase == 0 && cards[targetId].isLive) {
+        if (selected.id == null && game.phase == 0 && cards[targetId].isLive && game.turnActs < 2) {
             selected.id = targetId;
             selected.time = new Date().getTime();
             selected.origin = document.getElementById(selected.id+'_carta').offsetParent.id;
@@ -176,9 +176,9 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
             genMap(cardSelected);
             spotRange();
         }
-            
+        
         //Attack
-        if (selected.id == null && game.phase == 1 && document.getElementById(targetId + '_carta').offsetParent.id != 'cardBox' && cards[targetId].isLive) {
+        if (selected.id == null && game.phase == 1 && document.getElementById(targetId + '_carta').offsetParent.id != 'cardBox' && cards[targetId].isLive && game.turnActs < 2) {
             selected.id = targetId;
             selected.time = new Date().getTime();
             selected.origin = document.getElementById(selected.id+'_carta').offsetParent.id;
@@ -235,10 +235,13 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
                 dmgCard.c1.div.classList.remove('dmgTake');
                 dmgCard.c2.div.classList.remove('dmgTake');
                 dmgLabel.classList.remove('dmgUp');
-                dmgLabel.style.display = 'none'
+                dmgLabel.style.display = 'none';
+                game.turnActs++;
             }, 999);
             defaultClean();
         }
+
+        //Peace
         
         //Reset
         if (new Date().getTime()-selected.time>180 && selected.id != null && (

@@ -51,10 +51,20 @@ function placeSelectable(elmnt = document.getElementById('elmnt')) {
                     if (selected.origin != 'cardBox') {
                         const lastPlaceId = selected.origin.split('_')[0];
                         places[parseInt(lastPlaceId)].div.removeChild(cardSelected.div);
+                        
+                    }
+
+                    if (selected.origin == 'cardBox') {
+                        for (let pl of players) {
+                            if (pl.deck == cards[selected.id].deck) {
+                                players[players.indexOf(pl)].cardsInGame.push(selected.id);
+                            }
+                        }
                     }
                     
                     places[parseInt(placeId)].div.appendChild(cardSelected.div);
                     cards[selected.id].inGame = true;
+                    game.turnActs++;
                 }
                 
                 cardSelected.div.classList.remove('select');

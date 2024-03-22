@@ -11,21 +11,21 @@ const game = {
     phase:0,
     phaseMax:2,
     phaseTitle:'Fase de Movimento',
-    turnActs:0,
     turnPlayer:0,
-    turnPlayerMax:0
+    turnPlayerMax:1,
+    turnActs:0
 }
 
 function proxFase() {
-
     game.phase++;
+    game.turnActs = 0;
     if (game.phase > game.phaseMax) {
         game.phase = 0;
-        game.turnActs = 0;
         game.turnPlayer = (game.turnPlayer+1 <= game.turnPlayerMax)? game.turnPlayer+1 : 0;
     }
     resetSelections();
     
+    console.log(players)
     switch (game.phase) {
         case 0:
             game.phaseTitle = 'Fase de Movimento'
@@ -40,7 +40,8 @@ function proxFase() {
             }
         break;
         case 1:
-           game.phaseTitle = 'Fase de Ataque'
+            game.phaseTitle = 'Fase de Ataque'
+            console.log(game.phase)
         break;
         case 2:
             game.phaseTitle = 'Fase de Acordos'
@@ -51,7 +52,13 @@ function proxFase() {
                 }
             });
             selected.editPlaces.forEach((e = {pos:0, deck:''}) => {
-                places[e.pos].div.classList.add(`m${e.deck}`);
+                if (places[e.pos].div.className.includes('m') && 
+                    !places[e.pos].div.className.includes(`m${players[game.turnPlayer].deck}`)) {
+                    console.log('Já tem um país égua')
+                    places[e.pos].div.className = 'place';
+                } else {
+                    places[e.pos].div.classList.add(`m${e.deck}`);
+                }
             });
         break;
     }
