@@ -9,7 +9,7 @@ players.push(new Player('Brasil'));
 players.push(new Player('EstadosUnidos'));
 
 makeCards(`
-    Zumbí dos Palmares/80/25/+/2;
+
     Esperança Garcia/60/200/+/4;
     Edson Arantes (Pelé)/90/150/x/2;
     Dom Pedro II/50/130/x/4;
@@ -41,6 +41,10 @@ function fps() {
             cards[ix].div.style.display = 'inline-block';
         }
     });
+
+    if (game.turnActs >= 2) {
+        proxFase();
+    }
 
     // document.getElementById('id_view').innerHTML = `S.id: ${selected.id}`;
     // document.getElementById('org_view').innerHTML = `S.og: ${selected.origin}`
