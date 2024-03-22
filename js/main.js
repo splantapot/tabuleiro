@@ -21,9 +21,18 @@ function fps() {
     requestAnimationFrame(fps);
 
     if (selected.editPlaces != null) {
+        let classToAdd;
+        switch (game.phase) {
+            case 0:
+                classToAdd = 'moverange';
+            break;
+            case 1:
+                classToAdd = 'atkrange';
+            break;
+        }
         for(let edit of selected.editPlaces) {
             if (places[edit] != undefined) {
-                places[edit].div.classList.add('moverange');
+                places[edit].div.classList.add(classToAdd);
             }
         }
     }

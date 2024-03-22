@@ -16,8 +16,18 @@ class Cards {
         this.moveType = moveType;
         this.moveRng = moveRng;
 
-        this.cardScale = (1080/1650); // =~ 0.6545
+        //Kill
+        this.isLive = true;
+        this.kill = () => {
+            let diedFace = document.createElement('div');
+            diedFace.id = this.id+'KO';
+            diedFace.classList.add('deadCard');
+            this.div.appendChild(diedFace);
+        }
 
+        this.cardScale = (1080/1650); // =~ 0.6545, Const de proporção da carta
+
+        //  Creating card div
         let newPlace = document.createElement('div');
         newPlace.id = id;
         newPlace.classList.add('card');
@@ -69,7 +79,11 @@ function viewCard(elmnt = document.getElementById('elmnt')) {
         e.preventDefault();
 
         if(elmnt.localName == 'div') {
-            elmnt = (elmnt.children[0]);
+            if (elmnt.classList.contains('card')) {
+                elmnt = (elmnt.children[0]);
+            } else if (elmnt.classList.contains('deadCard')) {
+                console.log(elmnt.parentElement);
+            }
         }
 
         const cardId = parseInt(elmnt.id.trim().split('_')[0]);
@@ -122,80 +136,32 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
         e == e || window.event;
         e.preventDefault();
         
+        const targetId = parseInt(e.target.id.split('_')[0]);
+        
         //Movement
-        if (selected.id == null && game.phase == 0) {
-            selected.id = parseInt(e.target.id.split('_')[0]);
+        if (selected.id == null && game.phase == 0 && cards[targetId].isLive) {
+            selected.id = targetId;
             selected.time = new Date().getTime();
             selected.origin = document.getElementById(selected.id+'_carta').offsetParent.id;
             const cardSelected = cards[selected.id];
             cardSelected.div.classList.add('select');
+            genMap(cardSelected);
+        }
             
-            if (document.getElementById(selected.origin).classList.contains('place')) {
-                const org = parseInt(selected.origin.split('_')[0]);
-                const maxX = org-(org%placeNumbers)+placeNumbers-1;
-                const minX = org-(org%placeNumbers);
-                selected.editPlaces = [];
-                const add = {
-                    x:0,
-                    y:0
-                }
-                switch (cardSelected.moveType) {
-                    case '+':
-                        for(let dir = 0; dir < 4; dir++) {
-                            add.x = Math.round(Math.cos(dir*Math.PI/2));
-                            add.y = Math.round(Math.sin(dir*Math.PI/2));
-                            for (let m = 1; m<=cardSelected.moveRng; m++) {
-                                const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
-                                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length)) {
-                                    selected.editPlaces.push((add.x*m)+(add.y*m*placeNumbers)+org)
-                                }
-                            }
-                        }
-                    break;
-
-                    case 'x':
-                        for(let dir = 0; dir < 4; dir++) {
-                            add.x = Math.round(Math.cos((dir*Math.PI/2)+(Math.PI/4)));
-                            add.y = Math.round(Math.sin((dir*Math.PI/2)+(Math.PI/4)));
-                            for (let m = 1; m<=cardSelected.moveRng; m++) {
-                                const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
-                                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length)) {
-                                    selected.editPlaces.push((add.x*m)+(add.y*m*placeNumbers)+org)
-                                }
-                            }
-                        }
-                        break;
-                        
-                        case '*':
-                            for(let dir = 0; dir < 8; dir++) {
-                                add.x = Math.round(Math.cos(dir*Math.PI/4));
-                            add.y = Math.round(Math.sin(dir*Math.PI/4));
-                            for (let m = 1; m<=cardSelected.moveRng; m++) {
-                                const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
-                                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length)) {
-                                    selected.editPlaces.push((add.x*m)+(add.y*m*placeNumbers)+org)
-                                }
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-            
-            //Attack
-            if (selected.id == null && game.phase == 1) {
-                selected.id = parseInt(e.target.id.split('_')[0]);
+        //Attack
+        if (selected.id == null && game.phase == 1 && document.getElementById(targetId + '_carta').offsetParent.id != 'cardBox' && cards[targetId].isLive) {
+            selected.id = targetId;
             selected.time = new Date().getTime();
+            selected.origin = document.getElementById(selected.id+'_carta').offsetParent.id;
             const cardSelected = cards[selected.id];
             cardSelected.div.classList.add('atk');
+            genMap(cardSelected);
         }
-        if (selected.id != null && game.phase == 1 && selected.id != parseInt(e.target.id.split('_')[0])) {
-            const targetId = parseInt(e.target.id.split('_')[0]);
+        if (selected.id != null && game.phase == 1 && selected.id != targetId && cards[targetId].isLive && document.getElementById(targetId + '_carta').offsetParent.classList.contains('atkrange')) {
             const targetCard = cards[targetId];
             const atackerCard = cards[selected.id]
             const dmgType = Math.sign(atackerCard.power-targetCard.power);
             const dmgLabel = document.getElementById('boardDmg');
-            console.log(`${atackerCard.name} atk -> ${targetCard.name} (${dmgType})` );
             let finalPos;
             
             switch (dmgType) {
@@ -206,13 +172,19 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
                         w: Math.round(targetCard.div.getBoundingClientRect().width),
                         h: Math.round(targetCard.div.getBoundingClientRect().height)
                     };
-                    dmgLabel.innerHTML = `-${atackerCard.power-targetCard.power}`;
                     dmgLabel.style.left = `${finalPos.x-finalPos.w}px`;
                     dmgLabel.style.top = `${finalPos.y}px`;
                     dmgLabel.style.display = 'block';
                     dmgLabel.classList.add('dmgUp');
-                    targetCard.life -= (atackerCard.power-targetCard.power);
+                    let dmgTaked = targetCard.life-(atackerCard.power-targetCard.power)>0? (atackerCard.power-targetCard.power) : targetCard.life;
+                    targetCard.life -= dmgTaked;
+                    dmgLabel.innerHTML = `-${dmgTaked}`;
                     targetCard.div.classList.add('dmgTake');
+
+                    if (targetCard.life == 0) {
+                        targetCard.isLive = false;
+                        targetCard.kill();
+                    }
 
                 break;
                 case -1:
@@ -241,14 +213,67 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
             defaultClean();
         }
         
+        //Reset
         if (new Date().getTime()-selected.time>180 && selected.id != null && (
             (selected.id == parseInt(elmnt.id.split('_')[0])) ||
             (selected.id != elmnt.id && elmnt.classList.contains('card') && game.phase==0)
             )){
                 defaultClean();
-            }
+        }
 
-            
+        //Funcs
+        function genMap(genCardSelected) {
+            if (document.getElementById(selected.origin).classList.contains('place')) {
+                const org = parseInt(selected.origin.split('_')[0]);
+                const maxX = org-(org%placeNumbers)+placeNumbers-1;
+                const minX = org-(org%placeNumbers);
+                selected.editPlaces = [];
+                const add = {
+                    x:0,
+                    y:0
+                }
+                switch (genCardSelected.moveType) {
+                    case '+':
+                        for(let dir = 0; dir < 4; dir++) {
+                            add.x = Math.round(Math.cos(dir*Math.PI/2));
+                            add.y = Math.round(Math.sin(dir*Math.PI/2));
+                            for (let m = 1; m<=genCardSelected.moveRng; m++) {
+                                const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
+                                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length)) {
+                                    selected.editPlaces.push((add.x*m)+(add.y*m*placeNumbers)+org)
+                                }
+                            }
+                        }
+                    break;
+
+                    case 'x':
+                        for(let dir = 0; dir < 4; dir++) {
+                            add.x = Math.round(Math.cos((dir*Math.PI/2)+(Math.PI/4)));
+                            add.y = Math.round(Math.sin((dir*Math.PI/2)+(Math.PI/4)));
+                            for (let m = 1; m<=genCardSelected.moveRng; m++) {
+                                const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
+                                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length)) {
+                                    selected.editPlaces.push((add.x*m)+(add.y*m*placeNumbers)+org)
+                                }
+                            }
+                        }
+                    break;
+                        
+                    case '*':
+                        for(let dir = 0; dir < 8; dir++) {
+                            add.x = Math.round(Math.cos(dir*Math.PI/4));
+                            add.y = Math.round(Math.sin(dir*Math.PI/4));
+                            for (let m = 1; m<=genCardSelected.moveRng; m++) {
+                                const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
+                                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length)) {
+                                    selected.editPlaces.push((add.x*m)+(add.y*m*placeNumbers)+org)
+                                }
+                            }
+                        }
+                    break;
+                }
+            }
+        }
         function defaultClean() {
             const cardSelected = cards[selected.id];
             cardSelected.div.classList.remove('select');
@@ -256,14 +281,7 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
             selected.id = null;
             selected.time = new Date().getTime();
             selected.origin = null;
-            if (selected.editPlaces != null) {
-                for(let edit of selected.editPlaces) {
-                    if (places[edit] != undefined) {
-                        places[edit].div.classList.remove('moverange');
-                    }
-                }
-                selected.editPlaces = null;
-            }
+            cleanRangeList();
         }
         elmnt. onmouseup = onMouseUp;
     };

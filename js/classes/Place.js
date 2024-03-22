@@ -17,6 +17,18 @@ class Place {
     }
 }
 
+function cleanRangeList() {
+    if (selected.editPlaces != null) {
+        for(let edit of selected.editPlaces) {
+            if (places[edit] != undefined) {
+                places[edit].div.classList.remove('moverange');
+                places[edit].div.classList.remove('atkrange');
+            }
+        }
+        selected.editPlaces = null;
+    }
+}
+
 function placeSelectable(elmnt = document.getElementById('elmnt')) {
     elmnt.onmousedown = onMouseDown;
     
@@ -50,15 +62,7 @@ function placeSelectable(elmnt = document.getElementById('elmnt')) {
                 selected.id = null;
                 selected.time = new Date().getTime();
                 selected.origin = null;
-
-                if (selected.editPlaces != null) {
-                    for(let edit of selected.editPlaces) {
-                        if (places[edit] != undefined) {
-                            places[edit].div.classList.remove('moverange');
-                        }
-                    }
-                    selected.editPlaces = null;
-                }
+                cleanRangeList();
             }
         }
     }

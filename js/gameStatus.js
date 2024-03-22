@@ -5,14 +5,15 @@
 */
 const game = {
     phase:0,
-    turnActs:0,
-    phaseTitle:'Fase de Movimento'
+    phaseMax:1,
+    phaseTitle:'Fase de Movimento',
+    turnActs:0
 }
 
 function proxFase() {
     if (selected.id == null) {
         game.phase++;
-        if (game.phase >= 2) {
+        if (game.phase > game.phaseMax) {
             resetTurno();
         }
     
