@@ -1,34 +1,41 @@
 * {
     --blue:#1900ff80;
-    --green:#05661a80;
-    --yellow:#837b0b80;
+    --blue50:#1900ff50;
+    --green:#06992680;
+    --yellow:#e9db1880;
     --red:#ff000080;
     --white:#ffffff80;
-    --black:#00000080;
+    --black:#00000040;
+} 
+
+.mBrasil {
+    background: 
+        linear-gradient(32deg,var(--green),var(--yellow));
+}
+.mEstadosUnidos {
+    background: linear-gradient(180deg,var(--blue),var(--white),var(--red),var(--white),var(--red),var(--white),var(--red));
+}
+.mRussia {
+    background: linear-gradient(180deg,var(--white),var(--white),var(--blue),var(--blue),var(--red),var(--red));
 }
 
-.rngBrasil {
-    background: linear-gradient(45deg,var(--green),var(--yellow));
+.mChina {
+    background: linear-gradient(135deg,var(--yellow),var(--red),var(--red));
 }
-.rngEstadosUnidos {
-    
-}
-.rngRussia {
-    
-}
-.rngChina {
-    
-}
-.rngReinoUnido {
-    
 
+.mReinoUnido {
+    background: 
+        linear-gradient(90deg, var(--blue50),var(--blue50),var(--white),var(--red),var(--white),var(--blue50),var(--blue50)),
+        linear-gradient(0deg, var(--blue50),var(--blue50),var(--white),var(--red),var(--white),var(--blue50),var(--blue50));
 }
-.rngIsrael {
-
+.mIsrael {
+    background: 
+        linear-gradient(0deg, var(--white),var(--blue),var(--white),var(--white),var(--blue),var(--white)),
+        radial-gradient(circle at center, var(--blue) 30%, rgba(255,255,255,0.1) 70%);
 }
-.rngEspanha {
-
+.mEspanha {
+    background: linear-gradient(0deg, var(--red), var(--yellow),var(--yellow), var(--red));
 }
-.rngAngola {
-
+.mAngola {
+    background: linear-gradient(180deg, var(--red),var(--red),var(--black),var(--black));
 }

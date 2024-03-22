@@ -104,7 +104,8 @@ function viewCard(elmnt = document.getElementById('elmnt')) {
 
         cardView.style.filter = cards[cardId].isLive? 'none' : 'grayscale(100%)';
         cardView.style.display = selected.id==null? 'block' : 'none';
-        cardView.style.left = `${finalPos.x - cardView.clientWidth-10}px`;
+        cardView.style.left =  finalPos.x - cardView.clientWidth-10>0? `${finalPos.x - cardView.clientWidth-10}px`: 
+            `${finalPos.x+50}px`;
         cardView.style.top = `${finalPos.y/4}px`;
 
         const imgView = document.getElementById('cardViewImg');
@@ -137,6 +138,25 @@ const selected = {
     editPlaces: null
 }
 
+function spotRange() {
+    if (selected.editPlaces != null) {
+        let classToAdd;
+        switch (game.phase) {
+            case 0:
+                classToAdd = 'moverange';
+            break;
+            case 1:
+                classToAdd = 'atkrange';
+            break;
+        }
+        for(let edit of selected.editPlaces) {
+            if (places[edit] != undefined && classToAdd != undefined) {
+                places[edit].div.classList.add(classToAdd);
+            }
+        }
+    }
+}
+
 function cardSelectable(elmnt = document.getElementById('elmnt')) {
     elmnt.onmousedown = onMouseDown;
 
@@ -154,6 +174,7 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
             const cardSelected = cards[selected.id];
             cardSelected.div.classList.add('select');
             genMap(cardSelected);
+            spotRange();
         }
             
         //Attack
@@ -164,6 +185,7 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
             const cardSelected = cards[selected.id];
             cardSelected.div.classList.add('atk');
             genMap(cardSelected);
+            spotRange();
         }
         if (selected.id != null && game.phase == 1 && selected.id != targetId && cards[targetId].isLive && document.getElementById(targetId + '_carta').offsetParent.classList.contains('atkrange')) {
             const dmgType = Math.sign(cards[selected.id].power-cards[targetId].power);
@@ -216,7 +238,6 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
                 dmgLabel.style.display = 'none'
             }, 999);
             defaultClean();
-            console.log(cards)
         }
         
         //Reset
@@ -238,6 +259,7 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
                     x:0,
                     y:0
                 }
+                //Regras padrão
                 switch (genCardSelected.moveType) {
                     case '+':
                         for(let dir = 0; dir < 4; dir++) {
@@ -245,41 +267,45 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
                             add.y = Math.round(Math.sin(dir*Math.PI/2));
                             for (let m = 1; m<=genCardSelected.moveRng; m++) {
                                 const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
-                                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length)) {
+                                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length) && 
+                                    !(selected.editPlaces.includes((add.x*m)+(add.y*m*placeNumbers)+org))) {
                                     selected.editPlaces.push((add.x*m)+(add.y*m*placeNumbers)+org)
                                 }
                             }
                         }
-                    break;
-
+                        break;
+    
                     case 'x':
                         for(let dir = 0; dir < 4; dir++) {
                             add.x = Math.round(Math.cos((dir*Math.PI/2)+(Math.PI/4)));
                             add.y = Math.round(Math.sin((dir*Math.PI/2)+(Math.PI/4)));
                             for (let m = 1; m<=genCardSelected.moveRng; m++) {
                                 const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
-                                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length)) {
+                                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length) && 
+                                !(selected.editPlaces.includes((add.x*m)+(add.y*m*placeNumbers)+org))) {
                                     selected.editPlaces.push((add.x*m)+(add.y*m*placeNumbers)+org)
                                 }
                             }
                         }
                     break;
-                        
+                            
                     case '*':
                         for(let dir = 0; dir < 8; dir++) {
                             add.x = Math.round(Math.cos(dir*Math.PI/4));
                             add.y = Math.round(Math.sin(dir*Math.PI/4));
                             for (let m = 1; m<=genCardSelected.moveRng; m++) {
                                 const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
-                                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length)) {
+                                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length) && 
+                                !(selected.editPlaces.includes((add.x*m)+(add.y*m*placeNumbers)+org))) {
                                     selected.editPlaces.push((add.x*m)+(add.y*m*placeNumbers)+org)
                                 }
                             }
                         }
                     break;
-                }
+                }             
             }
         }
+
         function defaultClean() {
             const cardSelected = cards[selected.id];
             cardSelected.div.classList.remove('select');
@@ -294,5 +320,44 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
 
     function onMouseUp(e) {
         elmnt.onmouseup = null;
+    }
+}
+
+function genMapAcordos(genCardSelected, deck) {
+    if (genCardSelected.div.parentElement.classList.contains('place')) {
+        const org = parseInt(genCardSelected.div.parentElement.id.split('_')[0]);
+        const maxX = org-(org%placeNumbers)+placeNumbers-1;
+        const minX = org-(org%placeNumbers);
+        const add = {
+            x:0,
+            y:0
+        }
+        //case '+':
+        for(let dir = 0; dir < 4; dir++) {
+            add.x = Math.round(Math.cos(dir*Math.PI/2));
+            add.y = Math.round(Math.sin(dir*Math.PI/2));
+            for (let m = 1; m<=Math.ceil(genCardSelected.moveRng*genCardSelected.life/genCardSelected.maxLife); m++) {
+                const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
+                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length) && 
+                    !(selected.editPlaces.includes((add.x*m)+(add.y*m*placeNumbers)+org))) {
+                    selected.editPlaces.push({pos:(add.x*m)+(add.y*m*placeNumbers)+org, deck: deck})
+                }
+            }
+        }
+        //case 'x':
+        for(let dir = 0; dir < 4; dir++) {
+            add.x = Math.round(Math.cos((dir*Math.PI/2)+(Math.PI/4)));
+            add.y = Math.round(Math.sin((dir*Math.PI/2)+(Math.PI/4)));
+            for (let m = 1; m<=Math.ceil(genCardSelected.moveRng*genCardSelected.life/genCardSelected.maxLife)-1; m++) {
+                const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
+                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length) && 
+                !(selected.editPlaces.includes((add.x*m)+(add.y*m*placeNumbers)+org))) {
+                    selected.editPlaces.push({pos:(add.x*m)+(add.y*m*placeNumbers)+org, deck: deck})
+                }
+            }
+        }
+        if (!(selected.editPlaces.includes(org))) {
+            selected.editPlaces.push({pos:org, deck: deck})
+        }
     }
 }

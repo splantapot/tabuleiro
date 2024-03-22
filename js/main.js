@@ -9,6 +9,10 @@ players.push(new Player('Brasil'));
 players.push(new Player('EstadosUnidos'));
 game.turnPlayerMax = players.length-1;
 
+for (let i = 0; i < 15; i++) {
+    document.getElementById(`${i+15}_place`).classList.add(`m${paises[i]}`)
+}
+
 makeCards(`
     Zumbí dos Palmares/80/25/+/2;
     Esperança Garcia/60/200/+/4;
@@ -42,25 +46,6 @@ function fps() {
             cards[ix].div.style.display = 'inline-block';
         }
     });
-
-    if (selected.editPlaces != null) {
-        let classToAdd;
-        switch (game.phase) {
-            case 0:
-                classToAdd = 'moverange';
-            break;
-            case 1:
-                classToAdd = 'atkrange';
-            break;
-        }
-        for(let edit of selected.editPlaces) {
-            if (places[edit] != undefined) {
-                places[edit].div.classList.add(classToAdd);
-            }
-        }
-    }
-
-
 
     document.getElementById('id_view').innerHTML = `S.id: ${selected.id}`;
     document.getElementById('org_view').innerHTML = `S.og: ${selected.origin}`

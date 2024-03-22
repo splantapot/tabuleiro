@@ -74,10 +74,64 @@ div[id="cardLabels"] {
 
 .select {
     border: solid rgb(0, 100, 255);
+    animation-name: select1;
+    animation-duration: 0.9s;
+    animation-iteration-count: infinite;
+}
+
+.select::before {
+    content: " ";
+    border: 2px dashed rgb(0, 20, 255);
+    position: absolute;
+    z-index: 12;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    animation-name: select2;
+    animation-duration: 0.9s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes select1 {
+    0% {border-color: rgb(0, 100, 255);}
+    100% {border-color: rgb(0, 20, 255);}
+}
+
+@keyframes select2 {
+    0% {border-color: rgb(0, 20, 255);}
+    100% {border-color: rgb(0, 100, 255);}
 }
 
 .atk {
     border: solid rgb(255, 50, 50);
+    animation-name: atk1;
+    animation-duration: 0.9s;
+    animation-iteration-count: infinite;
+}
+
+.atk::before {
+    content: " ";
+    border: 2px dashed rgb(200, 0, 0);
+    position: absolute;
+    z-index: 12;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    animation-name: atk2;
+    animation-duration: 0.9s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes atk1 {
+    0% {border-color: rgb(255, 50, 50);}
+    100% {border-color: rgb(200, 0, 0);}
+}
+
+@keyframes atk2 {
+    0% {border-color: rgb(200, 0, 0);}
+    100% {border-color: rgb(255, 50, 50);}
 }
 
 .dmgTake {

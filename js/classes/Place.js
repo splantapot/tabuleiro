@@ -21,8 +21,7 @@ function cleanRangeList() {
     if (selected.editPlaces != null) {
         for(let edit of selected.editPlaces) {
             if (places[edit] != undefined) {
-                places[edit].div.classList.remove('moverange');
-                places[edit].div.classList.remove('atkrange');
+                document.getElementById(places[edit].id).className = 'place';
             }
         }
         selected.editPlaces = null;
