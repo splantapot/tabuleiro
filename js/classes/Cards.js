@@ -16,6 +16,8 @@ class Cards {
         this.moveType = moveType;
         this.moveRng = moveRng;
         this.isLive = true;
+        this.maxLife = life;
+        this.inGame = false;
 
         // =~ 0.6545, Const de proporção da carta
         this.cardScale = (1080/1650); 
@@ -71,7 +73,12 @@ function makeCards(str = '', deck = '') {
             parseInt(cardText.trim().split('/')[4])//MoveRange
         ))
     });
-    console.log(cards);
+    let idx;
+    players.forEach((e,ix) => {
+        if (e.deck == deck) {
+            idx = ix;
+        }
+    });
 }
 
 function viewCard(elmnt = document.getElementById('elmnt')) {
@@ -209,6 +216,7 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
                 dmgLabel.style.display = 'none'
             }, 999);
             defaultClean();
+            console.log(cards)
         }
         
         //Reset

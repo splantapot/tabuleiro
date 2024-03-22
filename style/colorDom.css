@@ -1,0 +1,34 @@
+* {
+    --blue:#1900ff80;
+    --green:#05661a80;
+    --yellow:#837b0b80;
+    --red:#ff000080;
+    --white:#ffffff80;
+    --black:#00000080;
+}
+
+.rngBrasil {
+    background: linear-gradient(45deg,var(--green),var(--yellow));
+}
+.rngEstadosUnidos {
+    
+}
+.rngRussia {
+    
+}
+.rngChina {
+    
+}
+.rngReinoUnido {
+    
+
+}
+.rngIsrael {
+
+}
+.rngEspanha {
+
+}
+.rngAngola {
+
+}

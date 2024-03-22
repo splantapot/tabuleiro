@@ -43,7 +43,6 @@ function placeSelectable(elmnt = document.getElementById('elmnt')) {
             
             if (selected.id != null && ((new Date().getTime()-selected.time)>180)) {
                 if ((!(selected.origin == 'cardBox')) && !(selected.editPlaces != null && selected.editPlaces.includes(parseInt(placeId)))) {
-                    console.log('fora da area');
                     selected.id = null;
                 }
                 if (document.getElementById(placeId+'_place').childElementCount == 0 && selected.id != null) {
@@ -56,6 +55,7 @@ function placeSelectable(elmnt = document.getElementById('elmnt')) {
                     }
                     
                     places[parseInt(placeId)].div.appendChild(cardSelected.div);
+                    cards[selected.id].inGame = true;
                 }
                 
                 cardSelected.div.classList.remove('select');

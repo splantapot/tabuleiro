@@ -7,7 +7,9 @@ const game = {
     phase:0,
     phaseMax:1,
     phaseTitle:'Fase de Movimento',
-    turnActs:0
+    turnActs:0,
+    turnPlayer:0,
+    turnPlayerMax:0
 }
 
 function proxFase() {
@@ -35,4 +37,6 @@ function proxFase() {
 function resetTurno() {
     game.phase = 0;
     game.turnActs = 0;
+    game.turnPlayer = game.turnPlayer+1<=game.turnPlayerMax? game.turnPlayer+1 : 0;
+    //  1: -game.turnPlayer;
 }
