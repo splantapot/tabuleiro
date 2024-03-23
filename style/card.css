@@ -134,6 +134,37 @@ div[id="cardLabels"] {
     100% {border-color: rgb(255, 50, 50);}
 }
 
+.peace {
+    border: solid rgb(50, 255, 50);
+    animation-name: peace1;
+    animation-duration: 0.9s;
+    animation-iteration-count: infinite;
+}
+
+.peace::before {
+    content: " ";
+    border: 2px dashed rgb(0, 140, 0);
+    position: absolute;
+    z-index: 12;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    animation-name: peace2;
+    animation-duration: 0.9s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes peace1 {
+    0% {border-color: rgb(50, 255, 50);}
+    100% {border-color: rgb(0, 140, 0);}
+}
+
+@keyframes peace2 {
+    0% {border-color: rgb(0, 140, 0);}
+    100% {border-color: rgb(50, 255, 50);}
+}
+
 .dmgTake {
     animation-name: dmgAnim;
     animation-duration: 0.2s;

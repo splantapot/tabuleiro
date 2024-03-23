@@ -18,6 +18,7 @@ class Cards {
         this.isLive = true;
         this.maxLife = life;
         this.inGame = false;
+        this.tregua = null;
 
         // =~ 0.6545, Const de proporção da carta
         this.cardScale = (1080/1650); 
@@ -85,9 +86,10 @@ function viewCard(elmnt = document.getElementById('elmnt')) {
     const cardView = document.getElementById('cardView');
     const cardLabels = document.getElementById('cardLabels');
 
-    elmnt.onmouseenter = onMouseMove
+    elmnt.onmouseenter = onMouseEnter
+    cardView.onmouseleave = onMouseLeave
     
-    function onMouseMove(e) {
+    function onMouseEnter(e) {
         e == e || window.event;
         e.preventDefault();
 
@@ -167,7 +169,7 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
         const targetId = parseInt(e.target.id.split('_')[0]);
         
         //Movement
-        if (selected.id == null && game.phase == 0 && cards[targetId].isLive && game.turnActs < 2) {
+        if (selected.id == null && game.phase == 0 && cards[targetId].isLive && game.turnActs < 2  && cards[targetId].deck == players[game.turnPlayer].deck) {
             selected.id = targetId;
             selected.time = new Date().getTime();
             selected.origin = document.getElementById(selected.id+'_carta').offsetParent.id;
@@ -178,7 +180,7 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
         }
         
         //Attack
-        if (selected.id == null && game.phase == 1 && document.getElementById(targetId + '_carta').offsetParent.id != 'cardBox' && cards[targetId].isLive && game.turnActs < 2) {
+        if (selected.id == null && game.phase == 1 && document.getElementById(targetId + '_carta').offsetParent.id != 'cardBox' && cards[targetId].isLive && game.turnActs < 2 && cards[targetId].deck == players[game.turnPlayer].deck) {
             selected.id = targetId;
             selected.time = new Date().getTime();
             selected.origin = document.getElementById(selected.id+'_carta').offsetParent.id;
@@ -239,16 +241,16 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
                 game.turnActs++;
             }, 999);
             defaultClean();
+            cleanRangeList();
         }
 
-        //Peace
-        
         //Reset
         if (new Date().getTime()-selected.time>180 && selected.id != null && (
             (selected.id == parseInt(elmnt.id.split('_')[0])) ||
             (selected.id != elmnt.id && elmnt.classList.contains('card') && game.phase==0)
             )){
                 defaultClean();
+                cleanRangeList();
         }
 
         //Funcs
@@ -312,11 +314,11 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
         function defaultClean() {
             const cardSelected = cards[selected.id];
             cardSelected.div.classList.remove('select');
-            cardSelected.div.classList.remove('atk')
+            cardSelected.div.classList.remove('atk');
+            cardSelected.div.classList.remove('peace');
             selected.id = null;
             selected.time = new Date().getTime();
             selected.origin = null;
-            cleanRangeList();
         }
         elmnt. onmouseup = onMouseUp;
     };
@@ -362,5 +364,13 @@ function genMapAcordos(genCardSelected, deck) {
         if (!(selected.editPlaces.includes(org))) {
             selected.editPlaces.push({pos:org, deck: deck})
         }
+        selected.editPlaces.forEach((e = {pos:0, deck:''}) => {
+            if (places[e.pos].div.className.includes('m') && 
+                !places[e.pos].div.className.includes(`m${players[game.turnPlayer].deck}`)) {
+                places[e.pos].div.className = 'place';
+            } else {
+                places[e.pos].div.classList.add(`m${e.deck}`);
+            }
+        });
     }
 }

@@ -1,0 +1,87 @@
+body {
+    background-image: url('/imgs/fundoinicial.png');
+    background-size: cover; /* Para cobrir todo o tamanho da tela */
+    background-repeat: no-repeat; /* Para não repetir a imagem */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    margin: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 50px;
+    padding: 40px;
+    position: relative; /* Adiciona posição relativa para os elementos filhos usarem como referência */
+    z-index: 1; /* Garante que o contêiner fique acima do fundo desfocado */
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 60px;
+    background: inherit; /* Usa o mesmo plano de fundo do contêiner */
+    backdrop-filter: blur(10px); /* Aplica o efeito de desfoque */
+    z-index: -1; /* Coloca o elemento atrás do conteúdo do contêiner */
+}
+.h1 {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 55px;
+    color: gray; /* Cor do texto */
+    -webkit-text-stroke: 2px whitesmoke; /* Espessura e cor da borda */
+     /* Espessura e cor da borda */
+}
+
+.play-button {
+    padding: 10px 20px;
+    font-size: 35px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    text-align: center;
+    border: 3px solid transparent;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #002fff, #ff0000);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.play-button:hover {
+    border-color: whitesmoke;
+    font-size: 50px;
+}
+
+.play-button:focus {
+    outline: none;
+}
+
+.play-icon {
+    margin-right: 5px;
+}
+
+.icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-container i {
+    font-size: 30px;
+    margin: 0 10px;
+}
+
+.fas {
+    transition: transform 0.3s;
+}
+
+.fas:hover {
+    transform: scale(1.3);
+}

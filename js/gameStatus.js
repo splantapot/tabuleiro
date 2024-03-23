@@ -9,7 +9,7 @@ let players = [];
 const paises = ['Brasil','EstadosUnidos','ReinoUnido','Russia','China','Israel','Espanha','Angola'];
 const game = {
     phase:0,
-    phaseMax:2,
+    phaseMax:1,
     phaseTitle:'Fase de Movimento',
     turnPlayer:0,
     turnPlayerMax:1,
@@ -25,7 +25,6 @@ function proxFase() {
     }
     resetSelections();
     
-    console.log(players)
     switch (game.phase) {
         case 0:
             game.phaseTitle = 'Fase de Movimento'
@@ -41,7 +40,6 @@ function proxFase() {
         break;
         case 1:
             game.phaseTitle = 'Fase de Ataque'
-            console.log(game.phase)
         break;
         case 2:
             game.phaseTitle = 'Fase de Acordos'
@@ -49,15 +47,6 @@ function proxFase() {
             cards.forEach(card => {
                 if (card.inGame) {
                     genMapAcordos(card, card.deck);
-                }
-            });
-            selected.editPlaces.forEach((e = {pos:0, deck:''}) => {
-                if (places[e.pos].div.className.includes('m') && 
-                    !places[e.pos].div.className.includes(`m${players[game.turnPlayer].deck}`)) {
-                    console.log('Já tem um país égua')
-                    places[e.pos].div.className = 'place';
-                } else {
-                    places[e.pos].div.classList.add(`m${e.deck}`);
                 }
             });
         break;
@@ -69,6 +58,7 @@ function resetSelections() {
     if (selected.id != null) {
         cards[selected.id].div.classList.remove('select');
         cards[selected.id].div.classList.remove('atk');
+        cards[selected.id].div.classList.remove('peaces');
         selected.id = null;
         selected.time = new Date().getTime();
         selected.origin = null;

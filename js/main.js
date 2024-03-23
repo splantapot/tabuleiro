@@ -9,7 +9,7 @@ players.push(new Player('Brasil'));
 players.push(new Player('EstadosUnidos'));
 
 makeCards(`
-
+    Zumbi dos Palmares/30/50/*/23;
     Esperança Garcia/60/200/+/4;
     Edson Arantes (Pelé)/90/150/x/2;
     Dom Pedro II/50/130/x/4;
@@ -33,7 +33,7 @@ makeCards(`
 requestAnimationFrame(fps);
 function fps() {
     requestAnimationFrame(fps);
-
+    
     cards.forEach((c,ix) => {
         if (c.deck != players[game.turnPlayer].deck && !c.inGame) {
             cards[ix].div.style.display = 'none';
@@ -46,8 +46,8 @@ function fps() {
         proxFase();
     }
 
-    // document.getElementById('id_view').innerHTML = `S.id: ${selected.id}`;
-    // document.getElementById('org_view').innerHTML = `S.og: ${selected.origin}`
+    document.getElementById('id_view').innerHTML = `S.id: ${selected.id}`;
+    document.getElementById('org_view').innerHTML = `S.og: ${selected.origin}`
     // const len = selected.editPlaces == null? 0 : selected.editPlaces.length
     // document.getElementById('range_view').innerHTML = `S.rng: ${selected.editPlaces} (${len})`
     // document.getElementById('turn_view').innerHTML = `T.sts: ${game.phase}`
