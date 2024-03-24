@@ -44,7 +44,8 @@ class Cards {
         let imagemCarta = document.createElement('img');
         imagemCarta.id = `${id}Img`;
         imagemCarta.classList.add('imgCarta');
-        imagemCarta.src = `../cartas/${id}.png`
+        imagemCarta.src = `././cartas`;
+        console.log(imagemCarta.src)
         
         viewCard(imagemCarta);
         viewCard(newPlace);

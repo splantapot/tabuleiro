@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Domination - O jogo</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="style/homeStyle.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="h1">Domination</h1>
+        <button class="play-button" onclick="startGame()">
+            <span class="play-icon">&#9658;</span> Play
+        </button>
+    </div>
+    <div class="icon-container">
+        <button class="option-button" id="-" onclick="rmvPlayer()">-</button>
+        <i class="fas" id="0_sl"><img height="100px" width="100px"  src="/imgs/iconuser.png" alt="" 
+            class="pais" onclick="ctrSelector(0)" id="0_slImg" draggable="false"></i>
+        <i class="fas" id="1_sl"><img height="100px" width="100px" src="/imgs/iconuser.png" alt="" 
+            class="pais" onclick="ctrSelector(1)" id="1_slImg" draggable="false"></i>
+        <i class="fas" id="2_sl" style="display: none;"><img height="100px" width="100px" src="/imgs/iconuser.png" alt="" 
+            class="pais" onclick="ctrSelector(2)" id="2_slImg" draggable="false"></i>
+        <i class="fas" id="3_sl" style="display: none;"><img height="100px" width="100px" src="/imgs/iconuser.png" alt="" 
+            class="pais" onclick="ctrSelector(3)" id="3_slImg" draggable="false"></i>
+        <i class="fas" id="4_sl" style="display: none;"><img height="100px" width="100px" src="/imgs/iconuser.png" alt="" 
+            class="pais" onclick="ctrSelector(4)" id="4_slImg" draggable="false"></i>
+        <i class="fas" id="5_sl" style="display: none;"><img height="100px" width="100px" src="/imgs/iconuser.png" alt="" 
+            class="pais" onclick="ctrSelector(5)" id="5_slImg" draggable="false"></i>
+        <i class="fas" id="6_sl" style="display: none;"><img height="100px" width="100px" src="/imgs/iconuser.png" alt="" 
+            class="pais" onclick="ctrSelector(6)" id="6_slImg" draggable="false"></i>
+        <i class="fas" id="7_sl" style="display: none;"><img height="100px" width="100px" src="/imgs/iconuser.png" alt="" 
+            class="pais" onclick="ctrSelector(7)" id="7_slImg"></i>
+        <button class="option-button" id="+" onclick="addPlayer()">+</button>
+    </div>
+    <script src="js/classes/Player.js" defer></script>
+    <script src="js/gameStatus.js" defer></script>
+    <script src="js/homeSetup.js" defer></script>
+</body>
+</html>
