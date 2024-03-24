@@ -6,7 +6,7 @@
 let places = [];
 let cards = [];
 let players = [];
-const paises = ['Brasil','EstadosUnidos','ReinoUnido','Russia','China','Israel','Espanha','Angola'];
+const paises = ['Angola','Brasil','China','Espanha','EstadosUnidos','Israel','ReinoUnido','Russia'];
 const game = {
     phase:0,
     phaseMax:1,
@@ -43,12 +43,6 @@ function proxFase() {
         break;
         case 2:
             game.phaseTitle = 'Fase de Acordos'
-            selected.editPlaces = [];
-            cards.forEach(card => {
-                if (card.inGame) {
-                    genMapAcordos(card, card.deck);
-                }
-            });
         break;
     }
     document.getElementById('boardPhase').innerHTML = game.phaseTitle;

@@ -44,7 +44,7 @@ class Cards {
         let imagemCarta = document.createElement('img');
         imagemCarta.id = `${id}Img`;
         imagemCarta.classList.add('imgCarta');
-        imagemCarta.src = `../cartas/${id}.jpg`
+        imagemCarta.src = `../cartas/${id}.png`
         
         viewCard(imagemCarta);
         viewCard(newPlace);
@@ -325,52 +325,5 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
 
     function onMouseUp(e) {
         elmnt.onmouseup = null;
-    }
-}
-
-function genMapAcordos(genCardSelected, deck) {
-    if (genCardSelected.div.parentElement.classList.contains('place')) {
-        const org = parseInt(genCardSelected.div.parentElement.id.split('_')[0]);
-        const maxX = org-(org%placeNumbers)+placeNumbers-1;
-        const minX = org-(org%placeNumbers);
-        const add = {
-            x:0,
-            y:0
-        }
-        //case '+':
-        for(let dir = 0; dir < 4; dir++) {
-            add.x = Math.round(Math.cos(dir*Math.PI/2));
-            add.y = Math.round(Math.sin(dir*Math.PI/2));
-            for (let m = 1; m<=Math.ceil(genCardSelected.moveRng*genCardSelected.life/genCardSelected.maxLife); m++) {
-                const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
-                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length) && 
-                    !(selected.editPlaces.includes((add.x*m)+(add.y*m*placeNumbers)+org))) {
-                    selected.editPlaces.push({pos:(add.x*m)+(add.y*m*placeNumbers)+org, deck: deck})
-                }
-            }
-        }
-        //case 'x':
-        for(let dir = 0; dir < 4; dir++) {
-            add.x = Math.round(Math.cos((dir*Math.PI/2)+(Math.PI/4)));
-            add.y = Math.round(Math.sin((dir*Math.PI/2)+(Math.PI/4)));
-            for (let m = 1; m<=Math.ceil(genCardSelected.moveRng*genCardSelected.life/genCardSelected.maxLife)-1; m++) {
-                const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
-                if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length) && 
-                !(selected.editPlaces.includes((add.x*m)+(add.y*m*placeNumbers)+org))) {
-                    selected.editPlaces.push({pos:(add.x*m)+(add.y*m*placeNumbers)+org, deck: deck})
-                }
-            }
-        }
-        if (!(selected.editPlaces.includes(org))) {
-            selected.editPlaces.push({pos:org, deck: deck})
-        }
-        selected.editPlaces.forEach((e = {pos:0, deck:''}) => {
-            if (places[e.pos].div.className.includes('m') && 
-                !places[e.pos].div.className.includes(`m${players[game.turnPlayer].deck}`)) {
-                places[e.pos].div.className = 'place';
-            } else {
-                places[e.pos].div.classList.add(`m${e.deck}`);
-            }
-        });
     }
 }
