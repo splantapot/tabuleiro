@@ -40,6 +40,7 @@ class Cards {
         let newPlace = document.createElement('div');
         newPlace.id = id;
         newPlace.classList.add('card');
+        newPlace.style.display = 'none';
 
         let imagemCarta = document.createElement('img');
         imagemCarta.id = `${id}Img`;
@@ -163,7 +164,7 @@ function spotRange(need = false, card) {
                                 }
                             }
                         }
-                        console.log(`${deckA}: ${totalPowerA} // ${deckB}: ${totalPowerB}`);
+                        //console.log(`${deckA}: ${totalPowerA} // ${deckB}: ${totalPowerB}`);
                         switch (Math.sign(totalPowerA - totalPowerB)) {
                             case 1:
                             break;

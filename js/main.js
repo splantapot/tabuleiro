@@ -1,15 +1,11 @@
+const turnWho = document.getElementById('turnWho');
+
 for (let y = 0; y < placeNumbers; y++) {
     for (let x = 0; x < placeNumbers; x++) {
         let color = (x+y)%2==0? 'rgba(190,190,190,0.0)':'rgb(100,100,100,0.25)';
         places.push(new Place(`${x+(y*placeNumbers)}_place`, placeSize/placeNumbers, color, x, y));
     }
 }
-
-players.push(new Player('China'));
-players.push(new Player('Angola'));
-players.push(new Player('Brasil'));
-game.turnPlayerMax = players.length-1;
-game.turnMax = 3;
 
 makeCards(`
     Abel Epalanga/105/95/+/1;
@@ -92,7 +88,6 @@ makeCards(`
     Sofia kovalevskaya/115/130/+/3
 `, 'Russia');
 
-requestAnimationFrame(fps);
 function fps() {
     if (game.turnNow <= game.turnMax) {
         requestAnimationFrame(fps);
@@ -100,11 +95,12 @@ function fps() {
         game.isOver = true;
         console.log('Game overr');
         //When game is over
+        
         for (const player of players) {
             for (const card of cards) {
                 if (card.inGame && card.deck == player.deck) {
                     //Setup
-                    console.log(`a ${card.deck} card in game`);
+                    // console.log(`a ${card.deck} card in game`);
                     selected.editPlaces = [];
                     const org = parseInt(card.div.parentElement.id.split('_')[0]);
                     const maxX = org-(org%placeNumbers)+placeNumbers-1;
@@ -147,17 +143,30 @@ function fps() {
                 }
             }
         }
-
+        const score = [0, 0, 0, 0, 0, 0, 0, 0];
+        for (const place of places) {
+            const nameTag = place.div.className.split('place')[1].trim().split('m')[1]
+            if (place.div.className != 'place') {
+                score[paises.indexOf(nameTag)]++;
+            }
+        }
+        
+        let winners = [];
+        winners.push({pais:paises[score.indexOf(score.max())], sc:score.max()});
+        score.splice(score.indexOf(score.max()),1);
+        winners.push({pais:paises[score.indexOf(score.max())], sc:score.max()});
+        score.splice(score.indexOf(score.max()),1);
+        document.getElementById('boardTurn').innerHTML = `1º: ${winners[0].pais} (${winners[0].sc})`
+        document.getElementById('boardPhase').innerHTML = `2º: ${winners[1].pais} (${winners[1].sc})`
+    
         setTimeout(() => {
-            endGame.style.width = '100%'
-        }, 5000);
-        setTimeout(() => {
-            window.location.href = 'fim.html';
-        }, 1000); 
+            endGame.style.width = '100%';
+            endGame.style.left = '0%';
+        }, 10000);
     }
     
     cards.forEach((c,ix) => {
-        if (c.deck != players[game.turnPlayer].deck && !c.inGame) {
+        if (cards[ix].deck != players[game.turnPlayer].deck && !c.inGame) {
             cards[ix].div.style.display = 'none';
         } else {
             cards[ix].div.style.display = 'inline-block';
@@ -168,10 +177,12 @@ function fps() {
         proxFase();
     }
 
-    document.getElementById('id_view').innerHTML = `S.id: ${selected.id}`;
-    document.getElementById('org_view').innerHTML = `S.og: ${selected.origin}`
-    const len = selected.editPlaces == null? 0 : selected.editPlaces.length
-    document.getElementById('range_view').innerHTML = `S.rng: ${selected.editPlaces} (${len})`
-    // document.getElementById('turn_view').innerHTML = `T.sts: ${game.phase}`
-    document.getElementById('act_view').innerHTML = `T.plr: ${players[game.turnPlayer].deck}`
+    turnWho.src = `./imgs/bands/${players[game.turnPlayer].deck}.png`
+
+    // document.getElementById('id_view').innerHTML = `S.id: ${selected.id}`;
+    // document.getElementById('org_view').innerHTML = `S.og: ${selected.origin}`
+    // const len = selected.editPlaces == null? 0 : selected.editPlaces.length
+    // document.getElementById('range_view').innerHTML = `S.rng: ${selected.editPlaces} (${len})`
+    // // document.getElementById('turn_view').innerHTML = `T.sts: ${game.phase}`
+    // document.getElementById('act_view').innerHTML = `T.plr: ${players[game.turnPlayer].deck}`
 }

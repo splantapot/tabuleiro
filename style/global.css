@@ -37,7 +37,7 @@ div[id="playerMenu"] {
 
 div[id="cardBox"] {
     position: relative;
-    border: 4px solid transparent;
+    border: 2px solid white;
     border-radius: 7%;
     background-color: rgb(192, 246, 192);
     box-sizing: content-box;
@@ -146,6 +146,7 @@ div[id="endgame"] {
     height: 100%;
     background-color: black;
     z-index: 100;
-    display: initial;
+    display: flex;
+    flex-direction: row;
     transition: all 1s;
 }

@@ -20,47 +20,52 @@ const game = {
 }
 
 function proxPlayer() {
-    game.phase+=10;
-    proxFase();
+    if (!game.isOver) {
+        game.phase+=10;
+        proxFase();
+    }
 }
 
 function proxFase() {
-    game.phase++;
-    game.turnActs = 0;
-    if (game.phase > game.phaseMax) {
-        game.phase = 0;
-        let gameInitial = game.turnPlayer;
-        if (game.turnPlayer+1 <= game.turnPlayerMax) {
-            game.turnPlayer++;
-        } else {
-            game.turnPlayer = 0;
-            game.turnNow++;
-        }
-    }
-    resetSelections();
-    
-    switch (game.phase) {
-        case 0:
-            game.phaseTitle = 'Fase de Movimento'
-            if (selected.editPlaces != null) {
-                if (typeof selected.editPlaces[0] != Number) {
-                    selected.editPlaces.forEach((e = {pos:0, deck:''}) => {
-                        let x = e.pos;
-                        document.getElementById(places[x].id).className = 'place';
-                    });
-                }
-                cleanRangeList();
+    if (!game.isOver) {
+        game.phase++;
+        game.turnActs = 0;
+        if (game.phase > game.phaseMax) {
+            game.phase = 0;
+            let gameInitial = game.turnPlayer;
+            if (game.turnPlayer+1 < game.turnPlayerMax) {
+                game.turnPlayer++;
+            } else {
+                game.turnPlayer = 0;
+                game.turnNow++;
             }
-        break;
-        case 1:
-            game.phaseTitle = 'Fase de Ataque'
-        break;
-        case 2:
-            game.phaseTitle = 'Fase de Acordos'
-        break;
+        }
+        resetSelections();
+        
+        switch (game.phase) {
+            case 0:
+                game.phaseTitle = 'Fase de Movimento'
+                if (selected.editPlaces != null) {
+                    // if (typeof selected.editPlaces[0] != Number) {
+                    //     selected.editPlaces.forEach((e = {pos:0, deck:''}) => {
+                    //         let x = e.pos;
+                    //         document.getElementById(places[x].id).className = 'place';
+                    //     });
+                    // }
+                    cleanRangeList();
+                }
+            break;
+            case 1:
+                game.phaseTitle = 'Fase de Ataque'
+            break;
+            case 2:
+                game.phaseTitle = 'Fase de Acordos'
+            break;
+        }
+        document.getElementById('boardPhase').innerHTML = game.phaseTitle;
+        document.getElementById('boardTurn').innerHTML = `Turno: ${game.turnNow}`;
+
     }
-    document.getElementById('boardPhase').innerHTML = game.phaseTitle;
-    document.getElementById('boardTurn').innerHTML = `Turno: ${game.turnNow}`;
 }
 
 function resetSelections() {

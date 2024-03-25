@@ -21,7 +21,3 @@ const classMini = stylesSheets.cssRules[6];
 
 classMini.style.setProperty('height', `${Math.round(placePixel*0.8)}px`);
 classMini.style.setProperty('width', `${Math.round(placePixel*0.8*0.65)}px`);
-
-setTimeout(() => {
-    endGame.style.width = '0';
-}, 100);

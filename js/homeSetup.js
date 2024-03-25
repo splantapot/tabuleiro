@@ -74,11 +74,18 @@ function startGame() {
     if (playersPaises.includes(-1)) {
         alert('Selecione pelo menos 2 países');
     } else {
+        console.log(playersPaises)
         for (const option of playersPaises) {
             players.push(new Player(paises[option]));
         }
         setTimeout(() => {
-            window.location.href = 'game.html';
+            game.turnPlayerMax = players.length;
+            game.turnMax = document.getElementById("turnCoder").value;
+            setTimeout(() => {
+                endGame.style.width = '0';
+                endGame.style.left = '-50%'
+            }, 100);
+            fps();
         },200);
     }
 }
