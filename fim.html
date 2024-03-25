@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Domination - Pódio</title>
+<link rel="stylesheet" href="style/global.css">
+<style>
+  body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      width: 100%;
+      height: 100%;
+  }
+  .helmet-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .helmet {
+    position: relative;
+    width: 200px; /* adjust to the size of your helmet image */
+    height: 200px; /* adjust to the size of your helmet image */
+  }
+
+  .position-icon {
+    position: absolute;
+    width: 30px; /* adjust to the size of your position icons */
+    height: 30px; /* adjust to the size of your position icons */
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .first-place {
+    top: -180px;
+    left: 50px;
+  }
+
+  .third-place {
+    top: 80px;
+    right: -360px;
+  }
+
+  .second-place {
+    bottom: 150px;
+    left: -470px;
+  }
+</style>
+</head>
+<body>
+    <div class="helmet-container">
+        <div class="helmet">
+          <div class="position-icon first-place"><img width="150px" src="/imgs/iconuser.png" alt=""></div>
+          <div class="position-icon second-place"><img width="150px" src="/imgs/iconuser.png" alt=""></div>
+          <div class="position-icon third-place"><img width="150px" src="/imgs/iconuser.png" alt=""></div>
+        </div>
+      </div>
+</body>
+</html>

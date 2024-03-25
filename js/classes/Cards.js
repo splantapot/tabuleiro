@@ -43,9 +43,8 @@ class Cards {
 
         let imagemCarta = document.createElement('img');
         imagemCarta.id = `${id}Img`;
+        imagemCarta.src = `../imgs/cartas/${id}.png`;
         imagemCarta.classList.add('imgCarta');
-        imagemCarta.src = `././cartas`;
-        console.log(imagemCarta.src)
         
         viewCard(imagemCarta);
         viewCard(newPlace);
@@ -107,8 +106,8 @@ function viewCard(elmnt = document.getElementById('elmnt')) {
 
         cardView.style.filter = cards[cardId].isLive? 'none' : 'grayscale(100%)';
         cardView.style.display = selected.id==null? 'block' : 'none';
-        cardView.style.left =  finalPos.x - cardView.clientWidth-10>0? `${finalPos.x - cardView.clientWidth-10}px`: 
-            `${finalPos.x+50}px`;
+        cardView.style.left =  finalPos.x - cardView.clientWidth-10>0? `${finalPos.x - cardView.clientWidth-70}px`: 
+            `${finalPos.x+70}px`;
         cardView.style.top = `${finalPos.y/4}px`;
 
         const imgView = document.getElementById('cardViewImg');
@@ -141,20 +140,62 @@ const selected = {
     editPlaces: null
 }
 
-function spotRange() {
-    if (selected.editPlaces != null) {
-        let classToAdd;
-        switch (game.phase) {
-            case 0:
-                classToAdd = 'moverange';
-            break;
-            case 1:
-                classToAdd = 'atkrange';
-            break;
+function spotRange(need = false, card) {
+    if (need) {
+        //End game
+        if (selected.editPlaces != null) {
+            let classToAdd = `m${card.deck}`;
+            for(let edit of selected.editPlaces) {
+                if (places[edit] != undefined && classToAdd != undefined) {
+                    if (places[edit].div.className == 'place' || places[edit].div.classList.contains(`m${card.deck}`)) {
+                        places[edit].div.classList.add(classToAdd);
+                    } else {
+                        let deckA = places[edit].div.className.split('place')[1].trim().split('m')[1];
+                        let deckB = card.deck;
+                        let totalPowerA = 0;
+                        let totalPowerB = 0;
+                        for (const cardInside of cards) {
+                            if (cardInside.inGame && card.isLive) {
+                                if (cardInside.deck == deckA) {
+                                    totalPowerA += cardInside.power;
+                                } else if (cardInside.deck == deckB) {
+                                    totalPowerB += cardInside.power;
+                                }
+                            }
+                        }
+                        console.log(`${deckA}: ${totalPowerA} // ${deckB}: ${totalPowerB}`);
+                        switch (Math.sign(totalPowerA - totalPowerB)) {
+                            case 1:
+                            break;
+
+                            case -1:
+                                places[edit].div.className = 'place';
+                                places[edit].div.classList.add(`m${deckB}`)
+                            break;
+
+                            default:
+                                places[edit].div.className = 'place';console.log('a==b')
+                            break;
+                        }
+                    }
+                }
+            }
         }
-        for(let edit of selected.editPlaces) {
-            if (places[edit] != undefined && classToAdd != undefined) {
-                places[edit].div.classList.add(classToAdd);
+    } else {
+        if (selected.editPlaces != null) {
+            let classToAdd;
+            switch (game.phase) {
+                case 0:
+                    classToAdd = 'moverange';
+                break;
+                case 1:
+                    classToAdd = 'atkrange';
+                break;
+            }
+            for(let edit of selected.editPlaces) {
+                if (places[edit] != undefined && classToAdd != undefined) {
+                    places[edit].div.classList.add(classToAdd);
+                }
             }
         }
     }
@@ -170,7 +211,7 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
         const targetId = parseInt(e.target.id.split('_')[0]);
         
         //Movement
-        if (selected.id == null && game.phase == 0 && cards[targetId].isLive && game.turnActs < 2  && cards[targetId].deck == players[game.turnPlayer].deck) {
+        if (!game.isOver && selected.id == null && game.phase == 0 && cards[targetId].isLive && game.turnActs < 2  && cards[targetId].deck == players[game.turnPlayer].deck) {
             selected.id = targetId;
             selected.time = new Date().getTime();
             selected.origin = document.getElementById(selected.id+'_carta').offsetParent.id;
@@ -181,7 +222,7 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
         }
         
         //Attack
-        if (selected.id == null && game.phase == 1 && document.getElementById(targetId + '_carta').offsetParent.id != 'cardBox' && cards[targetId].isLive && game.turnActs < 2 && cards[targetId].deck == players[game.turnPlayer].deck) {
+        if (!game.isOver && selected.id == null && game.phase == 1 && document.getElementById(targetId + '_carta').offsetParent.id != 'cardBox' && cards[targetId].isLive && game.turnActs < 2 && cards[targetId].deck == players[game.turnPlayer].deck) {
             selected.id = targetId;
             selected.time = new Date().getTime();
             selected.origin = document.getElementById(selected.id+'_carta').offsetParent.id;
@@ -279,11 +320,12 @@ function cardSelectable(elmnt = document.getElementById('elmnt')) {
                                 }
                             }
                         }
-                        break;
+                    break;
     
                     case 'x':
                         for(let dir = 0; dir < 4; dir++) {
-                            add.x = Math.round(Math.cos((dir*Math.PI/2)+(Math.PI/4)));
+                            add.x = (dir*Math.PI/2)+(Math.PI/4)
+                            add.x = Math.round(Math.cos(add.x));
                             add.y = Math.round(Math.sin((dir*Math.PI/2)+(Math.PI/4)));
                             for (let m = 1; m<=genCardSelected.moveRng; m++) {
                                 const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);

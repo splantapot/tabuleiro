@@ -32,6 +32,7 @@ div[id="cardView"] {
     border-radius: 10px;
     
     display: none;
+    transition: all 0.2s;
 }
 
 .imgCardView {

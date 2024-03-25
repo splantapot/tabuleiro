@@ -1,4 +1,3 @@
-requestAnimationFrame(fps);
 for (let y = 0; y < placeNumbers; y++) {
     for (let x = 0; x < placeNumbers; x++) {
         let color = (x+y)%2==0? 'rgba(190,190,190,0.0)':'rgb(100,100,100,0.25)';
@@ -6,13 +5,16 @@ for (let y = 0; y < placeNumbers; y++) {
     }
 }
 
-players.push(new Player('ReinoUnido'));
-players.push(new Player('EstadosUnidos'));
+players.push(new Player('China'));
+players.push(new Player('Angola'));
+players.push(new Player('Brasil'));
+game.turnPlayerMax = players.length-1;
+game.turnMax = 3;
 
 makeCards(`
     Abel Epalanga/105/95/+/1;
-    Lúcio Lara/120/80/×/2;
-    Zacarias Kamwenho/130/70/×/2;
+    Lúcio Lara/120/80/x/2;
+    Zacarias Kamwenho/130/70/x/2;
     Laurinda Cardoso/75/125/+/1;
     Jonas Savimbi/140/80/*/3;
     Eduardo Santos/115/75/+/1;
@@ -31,11 +33,11 @@ makeCards(`
 `, 'Brasil');
 makeCards(`
     Hua Mulan/125/120/+/3;
-    Sun-Hui/90/145/×/3;
-    Lin Siniang/135/125/×/2;
+    Sun-Hui/90/145/x/3;
+    Lin Siniang/135/125/x/2;
     Yang Kaihui/100/130/+/3;
     Qin Shi Huang/150/80/*/2;
-    Confúcio/125/100/×/3;
+    Confúcio/125/100/x/3;
     Jackie Chan/130/100/+/2;
     Sun Yat Sen/120/100/+/2
 `, 'China');
@@ -87,13 +89,72 @@ makeCards(`
     Igor kurchatov/130/100/x/1;
     Valentina Tereshkova/120/120/+/2;
     Pedro o grande/155/70/*/2;
-    Sofia kovalevskaya/115/130/+/3;
+    Sofia kovalevskaya/115/130/+/3
 `, 'Russia');
 
-console.log(cards)
-
+requestAnimationFrame(fps);
 function fps() {
-    requestAnimationFrame(fps);
+    if (game.turnNow <= game.turnMax) {
+        requestAnimationFrame(fps);
+    } else {
+        game.isOver = true;
+        console.log('Game overr');
+        //When game is over
+        for (const player of players) {
+            for (const card of cards) {
+                if (card.inGame && card.deck == player.deck) {
+                    //Setup
+                    console.log(`a ${card.deck} card in game`);
+                    selected.editPlaces = [];
+                    const org = parseInt(card.div.parentElement.id.split('_')[0]);
+                    const maxX = org-(org%placeNumbers)+placeNumbers-1;
+                    const minX = org-(org%placeNumbers);
+                    selected.editPlaces = [];
+                    const add = {
+                        x:0,
+                        y:0
+                    }
+                    //Spawn inn +
+                    for(let dir = 0; dir < 4; dir++) {
+                        add.x = Math.round(Math.cos(dir*Math.PI/2));
+                        add.y = Math.round(Math.sin(dir*Math.PI/2));
+                        for (let m = 1; m<=card.moveRng; m++) {
+                            const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
+                            if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length) && 
+                                !(selected.editPlaces.includes((add.x*m)+(add.y*m*placeNumbers)+org))) {
+                                selected.editPlaces.push((add.x*m)+(add.y*m*placeNumbers)+org)
+                            }
+                        }
+                    }
+                    //Spawn in x
+                    for(let dir = 0; dir < 4; dir++) {
+                        add.x = (dir*Math.PI/2)+(Math.PI/4)
+                        add.x = Math.round(Math.cos(add.x));
+                        add.y = Math.round(Math.sin((dir*Math.PI/2)+(Math.PI/4)));
+                        for (let m = 1; m<=card.moveRng-1; m++) {
+                            const posGain = ((add.x*m)+(add.y*m*placeNumbers)+org);
+                            if ((posGain >= 0 && ((add.x*m)+org)<=maxX) && (((add.x*m)+org)>=minX) && (posGain<=places.length) && 
+                            !(selected.editPlaces.includes((add.x*m)+(add.y*m*placeNumbers)+org))) {
+                                selected.editPlaces.push((add.x*m)+(add.y*m*placeNumbers)+org)
+                            }
+                        }
+                    }
+                    //Spawn in self
+                    if (!(selected.editPlaces.includes(org))) {
+                        selected.editPlaces.push(org);
+                    }
+                    spotRange(true, card);
+                }
+            }
+        }
+
+        setTimeout(() => {
+            endGame.style.width = '100%'
+        }, 5000);
+        setTimeout(() => {
+            window.location.href = 'fim.html';
+        }, 1000); 
+    }
     
     cards.forEach((c,ix) => {
         if (c.deck != players[game.turnPlayer].deck && !c.inGame) {

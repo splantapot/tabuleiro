@@ -74,6 +74,11 @@ function startGame() {
     if (playersPaises.includes(-1)) {
         alert('Selecione pelo menos 2 países');
     } else {
-        console.log(playersPaises)
+        for (const option of playersPaises) {
+            players.push(new Player(paises[option]));
+        }
+        setTimeout(() => {
+            window.location.href = 'game.html';
+        },200);
     }
 }

@@ -12,8 +12,16 @@ const game = {
     phaseMax:1,
     phaseTitle:'Fase de Movimento',
     turnPlayer:0,
-    turnPlayerMax:1,
-    turnActs:0
+    turnPlayerMax:0,
+    turnActs:0,
+    turnNow:1,
+    turnMax:0,
+    isOver: false
+}
+
+function proxPlayer() {
+    game.phase+=10;
+    proxFase();
 }
 
 function proxFase() {
@@ -21,7 +29,13 @@ function proxFase() {
     game.turnActs = 0;
     if (game.phase > game.phaseMax) {
         game.phase = 0;
-        game.turnPlayer = (game.turnPlayer+1 <= game.turnPlayerMax)? game.turnPlayer+1 : 0;
+        let gameInitial = game.turnPlayer;
+        if (game.turnPlayer+1 <= game.turnPlayerMax) {
+            game.turnPlayer++;
+        } else {
+            game.turnPlayer = 0;
+            game.turnNow++;
+        }
     }
     resetSelections();
     
@@ -46,6 +60,7 @@ function proxFase() {
         break;
     }
     document.getElementById('boardPhase').innerHTML = game.phaseTitle;
+    document.getElementById('boardTurn').innerHTML = `Turno: ${game.turnNow}`;
 }
 
 function resetSelections() {
